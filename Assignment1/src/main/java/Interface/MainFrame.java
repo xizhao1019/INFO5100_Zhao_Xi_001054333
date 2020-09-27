@@ -5,7 +5,8 @@
  */
 package Interface;
 
-import Business.VitalSignHistory;
+import Person.Person;
+
 
 /**
  *
@@ -16,10 +17,10 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    private VitalSignHistory vsh;
+    private Person p;
     public MainFrame() {
         initComponents();
-        vsh = new VitalSignHistory();
+        p = new Person();
     }
 
     /**
@@ -33,23 +34,36 @@ public class MainFrame extends javax.swing.JFrame {
 
         SplitPane = new javax.swing.JSplitPane();
         leftJPanel = new javax.swing.JPanel();
-        btnCreate = new javax.swing.JButton();
-        btnView = new javax.swing.JButton();
+        CreateBtn = new javax.swing.JButton();
+        ViewBtn = new javax.swing.JButton();
         rightJPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1080, 520));
+        setSize(new java.awt.Dimension(1080, 520));
 
-        btnCreate.setText("Create Vital Sign");
-        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+        SplitPane.setDividerLocation(200);
+
+        CreateBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        CreateBtn.setText("Create Profile");
+        CreateBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        CreateBtn.setBorderPainted(false);
+        CreateBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        CreateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCreateActionPerformed(evt);
+                CreateBtnActionPerformed(evt);
             }
         });
 
-        btnView.setText("View Vital Sign");
-        btnView.addActionListener(new java.awt.event.ActionListener() {
+        ViewBtn.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        ViewBtn.setText("View Profile");
+        ViewBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        ViewBtn.setBorderPainted(false);
+        ViewBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ViewBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewActionPerformed(evt);
+                ViewBtnActionPerformed(evt);
             }
         });
 
@@ -57,37 +71,45 @@ public class MainFrame extends javax.swing.JFrame {
         leftJPanel.setLayout(leftJPanelLayout);
         leftJPanelLayout.setHorizontalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(leftJPanelLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftJPanelLayout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addGroup(leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCreate)
-                    .addComponent(btnView))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(ViewBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CreateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39))
         );
-
-        leftJPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCreate, btnView});
-
         leftJPanelLayout.setVerticalGroup(
             leftJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftJPanelLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(btnCreate)
-                .addGap(64, 64, 64)
-                .addComponent(btnView)
-                .addGap(190, 190, 190))
+                .addContainerGap(188, Short.MAX_VALUE)
+                .addComponent(CreateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(ViewBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         SplitPane.setLeftComponent(leftJPanel);
+
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 20)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Welcome to Personal Information Managment System");
+        jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout rightJPanelLayout = new javax.swing.GroupLayout(rightJPanel);
         rightJPanel.setLayout(rightJPanelLayout);
         rightJPanelLayout.setHorizontalGroup(
             rightJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightJPanelLayout.createSequentialGroup()
+                .addGap(124, 124, 124)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         rightJPanelLayout.setVerticalGroup(
             rightJPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 397, Short.MAX_VALUE)
+            .addGroup(rightJPanelLayout.createSequentialGroup()
+                .addContainerGap(195, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(197, Short.MAX_VALUE))
         );
 
         SplitPane.setRightComponent(rightJPanel);
@@ -96,31 +118,25 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(SplitPane))
+            .addComponent(SplitPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(SplitPane))
+            .addComponent(SplitPane, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
-        // TODO add your handling code here:
-        CreateVitalJPanel createJPanel = new CreateVitalJPanel(vsh);
+    private void CreateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateBtnActionPerformed
+        CreateJPanel createJPanel = new CreateJPanel(p);
         SplitPane.setRightComponent(createJPanel);
-    }//GEN-LAST:event_btnCreateActionPerformed
+    }//GEN-LAST:event_CreateBtnActionPerformed
 
-    private void btnViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewActionPerformed
-        ViewVitalsJPanel viewJPanel = new ViewVitalsJPanel(vsh);
+    private void ViewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewBtnActionPerformed
+        ViewJPanel viewJPanel = new ViewJPanel(p);
         SplitPane.setRightComponent(viewJPanel);
-        
-    }//GEN-LAST:event_btnViewActionPerformed
+    }//GEN-LAST:event_ViewBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,9 +174,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton CreateBtn;
     private javax.swing.JSplitPane SplitPane;
-    private javax.swing.JButton btnCreate;
-    private javax.swing.JButton btnView;
+    private javax.swing.JButton ViewBtn;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel leftJPanel;
     private javax.swing.JPanel rightJPanel;
     // End of variables declaration//GEN-END:variables
