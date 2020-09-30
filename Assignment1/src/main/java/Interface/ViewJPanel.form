@@ -440,12 +440,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel59">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Retinal Scan"/>
+                <Property name="text" type="java.lang.String" value="Retinal Scan Data"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel60">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Fingerprints"/>
+                <Property name="text" type="java.lang.String" value="Fingerprints Data"/>
               </Properties>
             </Component>
           </SubComponents>

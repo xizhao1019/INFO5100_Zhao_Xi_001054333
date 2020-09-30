@@ -360,9 +360,9 @@ public class ViewJPanel extends javax.swing.JPanel {
 
         jLabel58.setText("Healthplan Beneficiary Number");
 
-        jLabel59.setText("Retinal Scan");
+        jLabel59.setText("Retinal Scan Data");
 
-        jLabel60.setText("Fingerprints");
+        jLabel60.setText("Fingerprints Data");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
