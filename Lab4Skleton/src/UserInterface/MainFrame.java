@@ -117,18 +117,18 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupplierActionPerformed
         // TODO add your handling code here:
         CardLayout layout = (CardLayout)panelRight.getLayout();
-        panelRight.add(new LoginScreen(panelRight, adminUser.getSuppDir().getSupplierList(),evt));
+        panelRight.add(new LoginScreen(panelRight,adminUser,adminUser.getSuppDir().getSupplierList(),evt));
         layout.next(panelRight);
-        btnSupplier.addActionListener((ActionListener) new LoginScreen(panelRight, adminUser.getSuppDir().getSupplierList(),evt));
+        btnSupplier.addActionListener((ActionListener) new LoginScreen(panelRight,adminUser,adminUser.getSuppDir().getSupplierList(),evt));
 
     }//GEN-LAST:event_btnSupplierActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
         // TODO add your handling code here:
         CardLayout layout = (CardLayout)panelRight.getLayout();
-        panelRight.add(new LoginScreen(panelRight, adminUser.getCustDir().getCustomerList(),evt));
+        panelRight.add(new LoginScreen(panelRight,adminUser,adminUser.getCustDir().getCustomerList(),evt));
         layout.next(panelRight);
-        btnCustomer.addActionListener((ActionListener) new LoginScreen(panelRight, adminUser.getCustDir().getCustomerList(),evt));
+        btnCustomer.addActionListener((ActionListener) new LoginScreen(panelRight,adminUser,adminUser.getCustDir().getCustomerList(),evt));
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
