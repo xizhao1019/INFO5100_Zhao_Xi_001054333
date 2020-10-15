@@ -155,7 +155,7 @@ public class AdminMainScreen extends javax.swing.JPanel {
             Customer c = (Customer) u;
             Object[] row = new Object[2];
             row[0]=c;
-            row[1]=c.getUserName();
+            row[1]=c.getDateCreated();
             dtm.addRow(row);
         }
     }

@@ -6,6 +6,9 @@
 package UserInterface;
 
 import Business.Abstract.User;
+import Business.Users.Admin;
+import Business.Users.Customer;
+import Business.Users.Supplier;
 import javax.swing.JPanel;
 
 /**
@@ -19,11 +22,12 @@ public class SuccessScreen extends javax.swing.JPanel {
      */
     private User user; 
     private JPanel panelRight;
+    
     public SuccessScreen(JPanel panelRight, User user) {
         initComponents();
         this.user = user;
         this.panelRight = panelRight;
-        initialize();
+       // initialize();
     }
 
     /**
@@ -64,7 +68,7 @@ public class SuccessScreen extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-
+    
     private void initialize(){
         jLabel2.setText(jLabel2.getText()+" "+user.getUserName()+" !!!");
     }

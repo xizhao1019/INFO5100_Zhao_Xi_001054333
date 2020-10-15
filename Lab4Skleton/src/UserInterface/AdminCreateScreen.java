@@ -5,26 +5,16 @@
  */
 package UserInterface;
 
-import Business.Abstract.User;
 import Business.Users.Admin;
 import Business.Users.Customer;
 import Business.Users.Supplier;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -151,16 +141,15 @@ public class AdminCreateScreen extends javax.swing.JPanel {
         String pw   = txtPword.getText();
         String rpw = txtRePword.getText();
         
-        Admin admin = new Admin();
         if (!textFieldValid()) {
             JOptionPane.showMessageDialog(null,"Invalid input!");
         }
         else{ 
             if (radioCustomer.isSelected()) {
-                User user = new Customer(rpw,userName);
-                admin.getCustDir().getCustomerList().add(user);
-                user.setUserName(userName);
-                user.setPassword(rpw);
+                Customer c = new Customer(rpw,userName);
+                admin.getCustDir().getCustomerList().add(c);
+                c.setUserName(userName);
+                c.setPassword(rpw);
                 JOptionPane.showMessageDialog(null,"Account created successfully!");
                 txtUser.setText("");
                 txtPword.setText("");
@@ -171,10 +160,10 @@ public class AdminCreateScreen extends javax.swing.JPanel {
                 txtRePword.setBorder(null);
             }
             else if (radioSupplier.isSelected()) {
-                User user = new Supplier(rpw,userName);
-                admin.getSuppDir().getSupplierList().add(user);
-                user.setUserName(userName);
-                user.setPassword(rpw);
+                Supplier s = new Supplier(rpw,userName);
+                admin.getSuppDir().getSupplierList().add(s);
+                s.setUserName(userName);
+                s.setPassword(rpw);
                 JOptionPane.showMessageDialog(null,"Account created successfully!");
                 txtUser.setText("");
                 txtPword.setText("");
@@ -229,15 +218,24 @@ public class AdminCreateScreen extends javax.swing.JPanel {
         if (txtPword.getText().trim().equals("")||!inputPwordCorrect(txtPword.getText())) {
             validTextFields = false;
             txtPword.setBorder(new LineBorder(Color.RED));
-            txtRePword.setBorder(new LineBorder(Color.RED));
-         }
-         else   txtPword.setBorder(null);  
-        
-        if (txtRePword.getText().trim().equals("")||!inputPwordCorrect(txtRePword.getText())||!rePwordCheck()) {
+        }
+        else txtPword.setBorder(null); 
+           
+        if (txtRePword.getText().trim().equals("")||!inputPwordCorrect(txtRePword.getText())) {
             validTextFields = false;
-            txtRePword.setBorder(new LineBorder(Color.RED));              
-         }
-         else   txtRePword.setBorder(null);           
+            txtRePword.setBorder(new LineBorder(Color.RED));
+        }
+        else txtRePword.setBorder(null);
+        
+        if (!rePwordCheck()) {
+            validTextFields = false;
+            txtPword.setBorder(new LineBorder(Color.RED));
+            txtRePword.setBorder(new LineBorder(Color.RED));
+        }
+        else {
+            txtPword.setBorder(null); 
+            txtRePword.setBorder(null);
+        }
         
         return validTextFields;
     }

@@ -6,11 +6,15 @@
 package UserInterface;
 
 import Business.Abstract.User;
+import Business.Users.Admin;
 import Business.Users.Customer;
 import Business.Users.Supplier;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Vector;
+import java.util.function.Consumer;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -26,13 +30,15 @@ public class LoginScreen extends javax.swing.JPanel {
     List<User> list;
     JPanel panelRight;
     User user;
-    public LoginScreen(JPanel panelRight, List<User> list, ActionEvent evt) {
+    Admin admin;
+    public LoginScreen(JPanel panelRight, Admin admin, List<User> list, ActionEvent evt) {
         initComponents();
         this.list = list;
         this.panelRight = panelRight;
+        this.admin = admin;
         initialize(evt);
-    }
 
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,28 +100,66 @@ public class LoginScreen extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        
+      
+        if (verify()) {
         CardLayout layout = (CardLayout)panelRight.getLayout();
         panelRight.add(new SuccessScreen(panelRight, user));
         layout.next(panelRight);
+        }
+        else JOptionPane.showMessageDialog(null,"Wrong username or password!");
         
     }//GEN-LAST:event_btnSubmitActionPerformed
-
+    
+    private boolean verify(){
+        boolean search = false;
+        String pword = txtPword.getText();
+        for (int i = 0; i < admin.getCustDir().getCustomerList().size(); i++) {
+            if(pword.equals(admin.getCustDir().getCustomerList().get(i).getPassword())){
+                search = true;
+                break;
+            }
+        }
+         for (int i = 0; i < admin.getSuppDir().getSupplierList().size(); i++) {
+            if(pword.equals(admin.getSuppDir().getSupplierList().get(i).getPassword())){
+                search = true;
+                break;
+            }
+        }
+        return search;
+        
+    }
+    
     
     private void initialize(ActionEvent evt){
         //text should either be "Supplier Login Screen" OR "Customer Login Screen"
         //Based on the selection
         if (evt.getActionCommand().equals("Supplier")){
-           txtTitle.setText("Supplier Login Screen");
+           txtTitle.setText("Supplier Login Screen");   
+           comboUser.removeAllItems();
+//           Admin admin = (Admin)user; 
+//            admin = (Admin)user;
+            for (int i = 0; i < admin.getSuppDir().getSupplierList().size(); i++) {
+                comboUser.addItem(admin.getSuppDir().getSupplierList().get(i));
+//                user = admin.getSuppDir().getSupplierList().get(i);
+//                list.add(user);
+            }
+            
         }
         else if (evt.getActionCommand().equals("Customer")) {
            txtTitle.setText("Customer Login Screen"); 
+            comboUser.removeAllItems();
+//             admin = (Admin)user; 
+            for (int i = 0; i <admin.getCustDir().getCustomerList().size() ; i++) {
+                comboUser.addItem(admin.getCustDir().getCustomerList().get(i));
+//                user = admin.getSuppDir().getSupplierList().get(i);
+//                list.add(user);
+            }
         }
-        comboUser.removeAllItems();
+        
         //only customer or suppliers should be listed based on the selection
     }
     
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;
