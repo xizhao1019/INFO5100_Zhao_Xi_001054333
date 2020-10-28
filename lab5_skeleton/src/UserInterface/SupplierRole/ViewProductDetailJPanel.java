@@ -41,7 +41,11 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("View Product Detail");
+<<<<<<< HEAD
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
+=======
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 25, -1, -1));
+>>>>>>> master
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Product Name:");
@@ -68,7 +72,11 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
                 btnUpdateActionPerformed(evt);
             }
         });
+<<<<<<< HEAD
         add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 160, -1));
+=======
+        add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 300, 176, -1));
+>>>>>>> master
 
         btnBack.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnBack.setText("<< Back");
@@ -77,7 +85,11 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
                 btnBackActionPerformed(evt);
             }
         });
+<<<<<<< HEAD
         add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, -1, -1));
+=======
+        add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, -1, -1));
+>>>>>>> master
 
         txtId.setEditable(false);
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -88,7 +100,11 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
         jLabel5.setText("Product ID:");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, 30));
 
+<<<<<<< HEAD
         btnSave.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+=======
+        btnSave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+>>>>>>> master
         btnSave.setText("SAVE");
         btnSave.setEnabled(false);
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -96,7 +112,11 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
                 btnSaveActionPerformed(evt);
             }
         });
+<<<<<<< HEAD
         add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, 80, 30));
+=======
+        add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 300, 70, 30));
+>>>>>>> master
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed

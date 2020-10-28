@@ -20,17 +20,31 @@ public class ViewOrderItemDetailJPanel extends javax.swing.JPanel {
      */
     private JPanel upc;
     private OrderItem oi;
+<<<<<<< HEAD
+=======
+         
+>>>>>>> master
     public ViewOrderItemDetailJPanel(JPanel upc, OrderItem oi) {
         initComponents();
         this.upc = upc;
         this.oi = oi;
         txtProductName.setText(oi.getProduct().getProdName());
+<<<<<<< HEAD
         txtProductId.setText(String.valueOf(oi.getProduct().getModelNumber()));
         txtPaidPrice.setText(String.valueOf(oi.getSalesPrice()));
         txtQuantity.setText(String.valueOf(oi.getQuantity()));
         txtSalesPrice.setText(String.valueOf(oi.getProduct().getPrice()));
     }
 
+=======
+        txtProductId.setText(Integer.toString(oi.getProduct().getModelNumber()));
+        txtSalesPrice.setText(Double.toString(oi.getSalesPrice()));
+        txtQuantity.setText(Integer.toString(oi.getProduct().getAvail()));
+        txtPaidPrice.setText(Integer.toString(oi.getProduct().getPrice()));
+    }
+
+   
+>>>>>>> master
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,14 +92,26 @@ public class ViewOrderItemDetailJPanel extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Product ID:");
 
+<<<<<<< HEAD
+=======
+        jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+>>>>>>> master
         jLabel4.setText("Price:");
 
         txtSalesPrice.setEditable(false);
 
+<<<<<<< HEAD
+=======
+        jLabel6.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+>>>>>>> master
         jLabel6.setText("Quantity");
 
         txtQuantity.setEditable(false);
 
+<<<<<<< HEAD
+=======
+        jLabel7.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+>>>>>>> master
         jLabel7.setText("Paid Price");
 
         txtPaidPrice.setEditable(false);
@@ -95,6 +121,7 @@ public class ViewOrderItemDetailJPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+<<<<<<< HEAD
                 .addGap(87, 87, 87)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(backButton1)
@@ -120,10 +147,41 @@ public class ViewOrderItemDetailJPanel extends javax.swing.JPanel {
                             .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtPaidPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(133, 133, 133))
+=======
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(backButton1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(63, 63, 63)
+                                .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel7)
+                                        .addComponent(jLabel4))
+                                    .addGap(96, 96, 96)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtSalesPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtPaidPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addGap(89, 89, 89)
+                                    .addComponent(txtProductId, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(jLabel1)))
+                .addGap(116, 116, 116))
+>>>>>>> master
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+<<<<<<< HEAD
                 .addGap(66, 66, 66)
                 .addComponent(jLabel1)
                 .addGap(36, 36, 36)
@@ -154,6 +212,33 @@ public class ViewOrderItemDetailJPanel extends javax.swing.JPanel {
                     .addComponent(jLabel7)
                     .addComponent(txtPaidPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(57, 57, 57)
+=======
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtProductId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel4)
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel6)
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSalesPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(txtPaidPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(61, 61, 61)
+>>>>>>> master
                 .addComponent(backButton1)
                 .addGap(37, 37, 37))
         );
@@ -162,9 +247,14 @@ public class ViewOrderItemDetailJPanel extends javax.swing.JPanel {
     private void backButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton1ActionPerformed
         // TODO add your handling code here:
         upc.remove(this);
+<<<<<<< HEAD
         CardLayout layout = (CardLayout)upc.getLayout();
         layout.previous(upc);
         
+=======
+        CardLayout layout = (CardLayout) upc.getLayout();
+        layout.previous(upc);   
+>>>>>>> master
     }//GEN-LAST:event_backButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

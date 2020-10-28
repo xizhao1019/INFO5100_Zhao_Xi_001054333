@@ -10,7 +10,10 @@ package Business;
  * @author zhaoxi
  */
 public class OrderItem {
+<<<<<<< HEAD
     
+=======
+>>>>>>> master
     private int quantity;
     private double salesPrice;
     private Product product;
@@ -44,4 +47,8 @@ public class OrderItem {
         return product.getProdName();
     }
     
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

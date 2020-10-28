@@ -23,6 +23,26 @@ public class Product {
         return prodName; //To change body of generated methods, choose Tools | Templates.
     }
 
+<<<<<<< HEAD
+=======
+    public int getAvail() {
+        return avail;
+    }
+
+    public void setAvail(int avail) {
+        this.avail = avail;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static void setCount(int count) {
+        Product.count = count;
+    }
+
+    
+>>>>>>> master
     public Product() {
     count++;
     modelNumber = count;
@@ -51,6 +71,7 @@ public class Product {
     public void setModelNumber(int modelNumber) {
         this.modelNumber = modelNumber;
     }
+<<<<<<< HEAD
 
     public int getAvail() {
         return avail;
@@ -67,6 +88,8 @@ public class Product {
     public static void setCount(int count) {
         Product.count = count;
     }
+=======
+>>>>>>> master
     
     
     

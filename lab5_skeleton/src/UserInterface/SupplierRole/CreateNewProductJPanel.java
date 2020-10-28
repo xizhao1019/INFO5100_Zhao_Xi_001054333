@@ -29,13 +29,21 @@ public class CreateNewProductJPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+<<<<<<< HEAD
         txtPrice = new javax.swing.JTextField();
+=======
+        txtAvail = new javax.swing.JTextField();
+>>>>>>> master
         btnAdd = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+<<<<<<< HEAD
         txtAvailability = new javax.swing.JTextField();
+=======
+        txtPrice = new javax.swing.JTextField();
+>>>>>>> master
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -44,20 +52,33 @@ public class CreateNewProductJPanel extends javax.swing.JPanel {
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+<<<<<<< HEAD
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Product ID:");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 100, 30));
+=======
+        jLabel2.setText("Product ID:");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(101, 130, 100, 30));
+>>>>>>> master
 
         txtId.setEditable(false);
         txtId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         add(txtId, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, 210, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+<<<<<<< HEAD
         jLabel3.setText("Product Price:");
         add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 180, 110, 30));
 
         txtPrice.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         add(txtPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, 160, 30));
+=======
+        jLabel3.setText("Availibility:");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 110, 30));
+
+        txtAvail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        add(txtAvail, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, 160, 30));
+>>>>>>> master
 
         btnAdd.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAdd.setText("Add Product");
@@ -85,23 +106,43 @@ public class CreateNewProductJPanel extends javax.swing.JPanel {
         add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 210, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+<<<<<<< HEAD
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Availability:");
         add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 130, 30));
 
         txtAvailability.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         add(txtAvailability, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, 160, 30));
+=======
+        jLabel4.setText("Product Price:");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(89, 180, 110, 30));
+
+        txtPrice.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        add(txtPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, 160, 30));
+>>>>>>> master
     }// </editor-fold>//GEN-END:initComponents
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
         Product p = supplier.getProductCatalog().addProduct();
         p.setProdName(txtName.getText());
+<<<<<<< HEAD
         p.setAvail(Integer.parseInt(txtAvailability.getText()));
+=======
+>>>>>>> master
         String stringPrice = txtPrice.getText();
         if(stringPrice.isEmpty()==false){
             int price = Integer.parseInt(stringPrice);
             p.setPrice(price);
         }
+<<<<<<< HEAD
+=======
+        String stringAvail = txtAvail.getText();
+        if(stringAvail.isEmpty()==false){
+            int Avail = Integer.parseInt(stringAvail);
+            p.setAvail(Avail);
+        }
+
+>>>>>>> master
         JOptionPane.showMessageDialog(null, "Product added!", "Info", JOptionPane.INFORMATION_MESSAGE);
 }//GEN-LAST:event_btnAddActionPerformed
 
@@ -124,7 +165,11 @@ public class CreateNewProductJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+<<<<<<< HEAD
     private javax.swing.JTextField txtAvailability;
+=======
+    private javax.swing.JTextField txtAvail;
+>>>>>>> master
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPrice;

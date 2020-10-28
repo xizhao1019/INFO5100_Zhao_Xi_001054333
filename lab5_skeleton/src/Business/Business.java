@@ -14,10 +14,15 @@ public class Business {
     private MasterOrderCatalog masterOrderCatalog;
     
     public Business(){
+<<<<<<< HEAD
         
         supplierDirectory = new SupplierDirectory();
         masterOrderCatalog = new MasterOrderCatalog();
         
+=======
+        supplierDirectory = new SupplierDirectory();
+        masterOrderCatalog = new MasterOrderCatalog();
+>>>>>>> master
     }
 
     public SupplierDirectory getSupplierDirectory() {
@@ -36,5 +41,8 @@ public class Business {
         this.masterOrderCatalog = masterOrderCatalog;
     }
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> master
 }
