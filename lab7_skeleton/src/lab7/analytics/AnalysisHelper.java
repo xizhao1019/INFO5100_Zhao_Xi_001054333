@@ -42,12 +42,10 @@ public class AnalysisHelper {
     public void getTheMostLikedComments(){
         Map<Integer, Comment> comments = DataStore.getInstance().getComments();
         
-        int likeNumber = 0;
         Map<Comment,Integer> commentslike = new HashMap<>();
         
         for (Comment c : comments.values()) {
-            likeNumber += c.getLikes();
-            commentslike.put(c,likeNumber);
+            commentslike.put(c,c.getLikes());
         }
         
         //sort map by likeNumber
@@ -60,7 +58,8 @@ public class AnalysisHelper {
             }
         });
         
-        System.out.println(list.get(0));
+        System.out.println("The most liked comment is " + list.get(0).getKey() + 
+                " with " + list.get(0).getValue() + " likes.");
 
 //        Iterator<Map.Entry<Comment,Integer>> iterator = list.iterator();
 //        for(Map.Entry<Comment,Integer> m : list){
