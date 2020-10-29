@@ -10,7 +10,14 @@ package lab7.analytics;
  * @author harshalneelkamal
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.LinkedList;
 import lab7.entities.Comment;
 
 
@@ -30,5 +37,36 @@ public class AnalysisHelper {
         System.out.println("Average of likes per comment: " + likeNumber / commentNumber);
             
     }
+    
+    //Find the post with most liked comments
+    public void getTheMostLikedComments(){
+        Map<Integer, Comment> comments = DataStore.getInstance().getComments();
+        
+        Map<Comment,Integer> commentslike = new HashMap<>();
+        
+        for (Comment c : comments.values()) {
+            commentslike.put(c,c.getLikes());
+        }
+        
+        //sort map by likeNumber
+        List<Map.Entry<Comment,Integer>> list = 
+                new ArrayList<>(commentslike.entrySet());
+        Collections.sort(list,new Comparator<Map.Entry<Comment,Integer>>() {
+            @Override
+            public int compare(Map.Entry<Comment, Integer> o1, Map.Entry<Comment, Integer> o2) {
+                return -o1.getValue().compareTo(o2.getValue());
+            }
+        });
+        
+        System.out.println("The most liked comment is " + list.get(0).getKey() + 
+                " with " + list.get(0).getValue() + " likes.");
+
+//        Iterator<Map.Entry<Comment,Integer>> iterator = list.iterator();
+//        for(Map.Entry<Comment,Integer> m : list){
+//            System.out.println(m.getKey()+" "+ m.getValue());
+//        }
+            
+    }
+    
     
 }
