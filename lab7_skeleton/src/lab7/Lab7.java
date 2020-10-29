@@ -94,5 +94,6 @@ public class Lab7 {
         // TODO
         helper.getAverageLikesPerCommets();
         helper.getTheMostLikedComments();
+        helper.getThePostWithMostComments();
     }
 }

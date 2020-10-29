@@ -14,11 +14,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedList;
 import lab7.entities.Comment;
+import lab7.entities.Post;
 
 
 public class AnalysisHelper {
@@ -34,7 +33,9 @@ public class AnalysisHelper {
             likeNumber += c.getLikes();
         }
         
+        System.out.println("");
         System.out.println("Average of likes per comment: " + likeNumber / commentNumber);
+        System.out.println("");
             
     }
     
@@ -58,8 +59,27 @@ public class AnalysisHelper {
             }
         });
         
-        System.out.println("The most liked comment is " + list.get(0).getKey() + 
-                " with " + list.get(0).getValue() + " likes.");
+        boolean duplicated = true;
+        for (int i = 1; i < list.size(); i++) {
+            duplicated = list.get(i).getValue() == list.get(0).getValue();
+            break;
+        }
+        
+        if (!duplicated) {
+            System.out.println("The most liked comment is: ");
+            System.out.println(list.get(0).getKey() + 
+            " with " + list.get(0).getValue() + " likes.");
+            System.out.println("");
+        }else{
+            System.out.println("The most liked comments are: ");
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getValue() == list.get(0).getValue()) {
+                System.out.println(list.get(i).getKey() + 
+                " with " + list.get(i).getValue() + " likes.");
+                System.out.println("");
+                }
+            }
+        }
 
 //        Iterator<Map.Entry<Comment,Integer>> iterator = list.iterator();
 //        for(Map.Entry<Comment,Integer> m : list){
@@ -67,6 +87,63 @@ public class AnalysisHelper {
 //        }
             
     }
+    
+    //Find the post with most comments
+    public void getThePostWithMostComments(){
+        Map<Integer,Post> posts = DataStore.getInstance().getPosts();
+        
+        Map<Post,Integer> postsWithComments = new HashMap<>();
+        
+        int commentNum = 0;
+        
+        for (Post p : posts.values()) {
+            commentNum = p.getComments().size();
+            postsWithComments.put(p,commentNum);
+        }
+          
+        //sort map by comment number
+        List<Map.Entry<Post,Integer>> list = 
+                new ArrayList<>(postsWithComments.entrySet());
+         Collections.sort(list,new Comparator<Map.Entry<Post,Integer>>(){
+            @Override
+            public int compare(Map.Entry< Post,Integer> o1, Map.Entry<Post,Integer> o2) {
+                return -o1.getValue().compareTo(o2.getValue());
+            }
+         });
+             
+        boolean duplicated = true;
+        for (int i = 1; i < list.size(); i++) {
+            duplicated = list.get(i).getValue() == list.get(0).getValue();
+            break;
+        }
+        
+        if (!duplicated) {
+            System.out.println("The post with the most comments is PostID " + list.get(0).getKey().getPostId() + 
+                " with " + list.get(0).getValue() + " comments.");
+        }else{
+                System.out.println("The posts with the most comments are:");
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getValue() == list.get(0).getValue()) {
+                System.out.println("PostID " + list.get(i).getKey().getPostId() + 
+                " with " + list.get(i).getValue() + " comments.");        
+                }
+            }
+        }
+
+//        for (int i = 0; i < list.size(); i++) {
+//            
+//            System.out.println(list.get(i).getKey().getPostId() +" "+ list.get(i).getKey().getUserId() + 
+//                    " " + list.get(i).getValue());
+//        }
+        
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
 }
