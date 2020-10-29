@@ -13,6 +13,19 @@ import java.awt.CardLayout;
  * @author Mihir Mehta / Hechen Gao
  */
 public class MainJFrame extends javax.swing.JFrame {
+<<<<<<< HEAD
+    
+    /** Creates new form MainJFrame */
+    private SupplierDirectory supplierDirectory;
+    private MasterOrderCatalog masterordercatalog;
+    public MainJFrame() {
+        initComponents();
+        Business business = new Business();
+        setSize(1000, 800);
+        supplierDirectory = business.getSupplierDirectory();
+        masterordercatalog = business.getMasterOrderCatalog();
+                
+=======
     private SupplierDirectory supplierDirectory;
     private MasterOrderCatalog masterOrderCatalog;
   
@@ -22,6 +35,7 @@ public class MainJFrame extends javax.swing.JFrame {
         supplierDirectory = business.getSupplierDirectory();
         masterOrderCatalog = business.getMasterOrderCatalog();
         setSize(1000, 800);
+>>>>>>> master
     }
 
     /** This method is called from within the constructor to
@@ -42,7 +56,11 @@ public class MainJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+<<<<<<< HEAD
+        jSplitPane1.setDividerLocation(180);
+=======
         jSplitPane1.setDividerLocation(150);
+>>>>>>> master
 
         btnAdmin.setText("Administrator");
         btnAdmin.addActionListener(new java.awt.event.ActionListener() {
@@ -70,23 +88,40 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+<<<<<<< HEAD
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnSupplierManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+=======
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnSupplierManager, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21))
+>>>>>>> master
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+<<<<<<< HEAD
+                .addGap(66, 66, 66)
+=======
                 .addGap(102, 102, 102)
+>>>>>>> master
                 .addComponent(btnAdmin)
                 .addGap(18, 18, 18)
                 .addComponent(btnSupplierManager)
                 .addGap(18, 18, 18)
                 .addComponent(btnCustomer)
+<<<<<<< HEAD
+                .addGap(200, 200, 200))
+=======
                 .addGap(101, 101, 101))
+>>>>>>> master
         );
 
         jSplitPane1.setLeftComponent(jPanel1);
@@ -117,9 +152,15 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSupplierManagerActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+<<<<<<< HEAD
+
+        CustomerWorkAreaJPanel cwajp = new CustomerWorkAreaJPanel(userProcessContainer, supplierDirectory,masterordercatalog);
+        userProcessContainer.add("CustomerWorkAreaJPanel", cwajp);
+=======
         
         CustomerWorkAreaJPanel cwajp = new CustomerWorkAreaJPanel(userProcessContainer, supplierDirectory, masterOrderCatalog);
         userProcessContainer.add("CustomerWA", cwajp);
+>>>>>>> master
         CardLayout layout = (CardLayout)userProcessContainer.getLayout();
         layout.next(userProcessContainer);
         

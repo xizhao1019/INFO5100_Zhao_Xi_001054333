@@ -15,6 +15,18 @@ import javax.swing.JPanel;
  * @author Rushabh
  */
 public class ViewProductDetailJPanel extends javax.swing.JPanel {
+<<<<<<< HEAD
+
+
+    /** Creates new form CreateProductJPanel */
+    private JPanel upc;
+    private Product p;
+    
+    public ViewProductDetailJPanel(JPanel upc, Product p){
+        initComponents();
+        this.upc = upc;
+        this.p = p;
+=======
     
     private JPanel userProcessContainer;
     private Product product;
@@ -24,6 +36,7 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
         initComponents();
         userProcessContainer = upc;
         product = p;
+>>>>>>> master
         nameField.setText(p.getProdName());
         idField.setText(String.valueOf(p.getModelNumber()));
         txtPrice.setText(String.valueOf(p.getPrice()));
@@ -53,7 +66,11 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("View Product Detail");
+<<<<<<< HEAD
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
+=======
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
+>>>>>>> master
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Product Name:");
@@ -80,7 +97,11 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
                 backButton1ActionPerformed(evt);
             }
         });
+<<<<<<< HEAD
+        add(backButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, -1, -1));
+=======
         add(backButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, -1, -1));
+>>>>>>> master
 
         idField.setEditable(false);
         idField.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -91,7 +112,10 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
         jLabel5.setText("Product ID:");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, 30));
 
+<<<<<<< HEAD
+=======
         jLabel6.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+>>>>>>> master
         jLabel6.setText("Availability");
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
 
@@ -100,11 +124,18 @@ public class ViewProductDetailJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton1ActionPerformed
+<<<<<<< HEAD
+        // TODO add your handling code here:
+        upc.remove(this);
+        CardLayout layout = (CardLayout)upc.getLayout();
+        layout.previous(upc);
+=======
        
         userProcessContainer.remove(this);
         CardLayout cardlayout = (CardLayout) userProcessContainer.getLayout();
         cardlayout.previous(userProcessContainer);
         
+>>>>>>> master
     }//GEN-LAST:event_backButton1ActionPerformed
     
     

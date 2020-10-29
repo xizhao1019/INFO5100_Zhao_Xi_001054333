@@ -40,6 +40,10 @@ public class AddSupplier extends javax.swing.JPanel {
 
         jLabel1.setText("Name");
 
+<<<<<<< HEAD
+        jLabel5.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+=======
+>>>>>>> master
         jLabel5.setText("NEW SUPPLIER");
 
         btnAdd.setText("ADD SUPPLIER");
@@ -66,6 +70,18 @@ public class AddSupplier extends javax.swing.JPanel {
                         .addGap(150, 150, 150)
                         .addComponent(jLabel5))
                     .addGroup(layout.createSequentialGroup()
+<<<<<<< HEAD
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addComponent(btnBack)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAdd)))
+                .addGap(108, 108, 108))
+=======
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnBack)
@@ -78,10 +94,24 @@ public class AddSupplier extends javax.swing.JPanel {
                                 .addGap(88, 88, 88)
                                 .addComponent(btnAdd)))))
                 .addGap(37, 37, 37))
+>>>>>>> master
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+<<<<<<< HEAD
+                .addGap(21, 21, 21)
+                .addComponent(jLabel5)
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(112, 112, 112)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnBack))
+                .addGap(54, 54, 54))
+=======
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addGap(38, 38, 38)
@@ -93,6 +123,7 @@ public class AddSupplier extends javax.swing.JPanel {
                     .addComponent(btnBack)
                     .addComponent(btnAdd))
                 .addGap(125, 125, 125))
+>>>>>>> master
         );
     }// </editor-fold>//GEN-END:initComponents
 

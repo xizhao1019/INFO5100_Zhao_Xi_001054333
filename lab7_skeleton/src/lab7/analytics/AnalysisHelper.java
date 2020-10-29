@@ -19,13 +19,15 @@ public class AnalysisHelper {
     //TODO
     public void getAverageLikesPerCommets() {
         Map<Integer, Comment> comments = DataStore.getInstance().getComments();
+        
         int likeNumber = 0;
         int commentNumber = comments.size();
+        
         for (Comment c : comments.values()) {
             likeNumber += c.getLikes();
         }
         
-        System.out.println("average of likes per comments: " + likeNumber / commentNumber);
+        System.out.println("Average of likes per comment: " + likeNumber / commentNumber);
             
     }
     
