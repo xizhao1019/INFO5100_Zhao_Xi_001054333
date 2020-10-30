@@ -69,7 +69,6 @@ public class AnalysisHelper {
             System.out.println("The most liked comment is: ");
             System.out.println(list.get(0).getKey() + 
             " with " + list.get(0).getValue() + " likes.");
-            System.out.println("");
         }else{
             System.out.println("The most liked comments are: ");
             for (int i = 0; i < list.size(); i++) {
@@ -149,7 +148,6 @@ public class AnalysisHelper {
                 temp.put(p.getUserId(),null);
             }
             
-            
             for (int i = 0; i < temp.keySet().size(); i ++) {
                 int totalPosts = 0;
                 for (Post p : posts.values()) {
@@ -170,7 +168,7 @@ public class AnalysisHelper {
             }
          });
          
-         System.out.println("The Top5 inactive users based on posts number are:");
+         System.out.println("The Top5 inactive users based on total posts are:");
          for (int i = 0; i < 5; i++) {
              System.out.println("UserID " + list.get(i).getKey() + " with " + list.get(i).getValue() + " posts in total.");
         }
@@ -191,7 +189,57 @@ public class AnalysisHelper {
         
     }
     
-    
+     public void inactiveUsersCommts(){
+        Map<Integer,Comment> comments = DataStore.getInstance().getComments();
+        
+        Map<Integer,Integer> temp = new HashMap<>();
+        
+         Map<Integer,Integer> UserComments = new HashMap<>();
+        
+            for(Comment c : comments.values()){
+                temp.put(c.getUserId(),null);
+            }
+            
+            for (int i = 0; i < temp.keySet().size(); i ++) {
+                int totalCommts = 0;
+                for (Comment c : comments.values()) {
+                   if(c.getUserId() == i) {
+                       totalCommts ++;
+                       UserComments.put(i, totalCommts);
+                    }
+                }
+            } 
+            
+         //sort map by total comments
+         List<Map.Entry<Integer,Integer>> list = 
+                new ArrayList<>(UserComments.entrySet());
+         Collections.sort(list,new Comparator<Map.Entry<Integer,Integer>>(){
+            @Override
+            public int compare(Map.Entry< Integer,Integer> o1, Map.Entry<Integer,Integer> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+         });
+         
+         System.out.println("The Top5 inactive users based on total comments are:");
+         for (int i = 0; i < 5; i++) {
+             System.out.println("UserID " + list.get(i).getKey() + " with " + list.get(i).getValue() + " comments in total.");
+        }
+         
+        System.out.println("");
+        
+//        for (int i = 0; i < list.size(); i++) {
+//            
+//            System.out.println(list.get(i).getKey()+" "+ list.get(i).getValue());
+//        }
+//        
+//        
+//         System.out.println("");
+//        for (Integer i : comments.keySet()) {
+//           
+//            System.out.println(comments.get(i).getUserId() + " " + comments.size());
+//        }
+//        
+     }
     
     
     
