@@ -98,6 +98,7 @@ public class Lab7 {
         helper.inactiveUsersPosts();
         helper.inactiveUsersCommts();
         helper.inactiveUsersOverall();
+        helper.proactiveUsersOverall();
                 
         
     }
