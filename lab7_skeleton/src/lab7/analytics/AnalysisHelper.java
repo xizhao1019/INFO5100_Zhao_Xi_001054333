@@ -76,11 +76,10 @@ public class AnalysisHelper {
                 if (list.get(i).getValue() == list.get(0).getValue()) {
                 System.out.println(list.get(i).getKey() + 
                 " with " + list.get(i).getValue() + " likes.");
-                System.out.println("");
                 }
             }
         }
-
+        System.out.println("");
 //        Iterator<Map.Entry<Comment,Integer>> iterator = list.iterator();
 //        for(Map.Entry<Comment,Integer> m : list){
 //            System.out.println(m.getKey()+" "+ m.getValue());
@@ -129,6 +128,7 @@ public class AnalysisHelper {
                 }
             }
         }
+        System.out.println("");
 
 //        for (int i = 0; i < list.size(); i++) {
 //            
@@ -138,6 +138,58 @@ public class AnalysisHelper {
         
     }
     
+    public void inactiveUsersPosts(){
+        Map<Integer,Post> posts = DataStore.getInstance().getPosts();
+        
+        Map<Integer,Integer> temp = new HashMap<>();
+        
+         Map<Integer,Integer> UserPost = new HashMap<>();
+        
+            for(Post p : posts.values()){
+                temp.put(p.getUserId(),null);
+            }
+            
+            
+            for (int i = 0; i < temp.keySet().size(); i ++) {
+                int totalPosts = 0;
+                for (Post p : posts.values()) {
+                   if(p.getUserId() == i) {
+                       totalPosts ++;
+                       UserPost.put(i, totalPosts);
+                    }
+                }
+            }
+        
+        //sort map by total posts number
+        List<Map.Entry<Integer,Integer>> list = 
+                new ArrayList<>(UserPost.entrySet());
+         Collections.sort(list,new Comparator<Map.Entry<Integer,Integer>>(){
+            @Override
+            public int compare(Map.Entry< Integer,Integer> o1, Map.Entry<Integer,Integer> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+         });
+         
+         System.out.println("The Top5 inactive users based on posts number are:");
+         for (int i = 0; i < 5; i++) {
+             System.out.println("UserID " + list.get(i).getKey() + " with " + list.get(i).getValue() + " posts in total.");
+        }
+         
+        System.out.println("");
+        
+//        for (int i = 0; i < list.size(); i++) {
+//            
+//            System.out.println(list.get(i).getKey()+" "+ list.get(i).getValue());
+//        }
+        
+        
+//         System.out.println("");
+//        for (Integer i : posts.keySet()) {
+//           
+//            System.out.println(posts.get(i).getUserId() + " " + posts.get(i).getComments().size());
+//        }
+        
+    }
     
     
     
