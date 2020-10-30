@@ -97,6 +97,7 @@ public class Lab7 {
         helper.getThePostWithMostComments();
         helper.inactiveUsersPosts();
         helper.inactiveUsersCommts();
+        helper.inactiveUsersOverall();
                 
         
     }
