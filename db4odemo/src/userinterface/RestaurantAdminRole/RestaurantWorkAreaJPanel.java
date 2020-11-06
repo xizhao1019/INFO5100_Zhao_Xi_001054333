@@ -3,6 +3,7 @@
 package userinterface.RestaurantAdminRole;
 
 
+import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 
@@ -12,14 +13,15 @@ import javax.swing.JPanel;
  */
 public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
     
-    JPanel userProcessContainer;
+    private JPanel userProcessContainer;
+    private UserAccount account;
     
     /** Creates new form AdminWorkAreaJPanel */
-    public RestaurantWorkAreaJPanel(JPanel userProcessContainer) {
+    public RestaurantWorkAreaJPanel(JPanel userProcessContainer,UserAccount account) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
-      
-        //valueLabel.setText();
+        this.account = account;
+        valueLabel.setText(account.getUsername());
     }
     
     /** This method is called from within the constructor to
@@ -49,7 +51,7 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
                 userJButtonActionPerformed(evt);
             }
         });
-        add(userJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 230, 180, -1));
+        add(userJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 240, 180, -1));
 
         manageEmployeeJButton.setText("Manage menu");
         manageEmployeeJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -57,7 +59,7 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
                 manageEmployeeJButtonActionPerformed(evt);
             }
         });
-        add(manageEmployeeJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, 150, -1));
+        add(manageEmployeeJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, 180, -1));
 
         manageOrganizationJButton.setText("Manage Orders");
         manageOrganizationJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -65,14 +67,14 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
                 manageOrganizationJButtonActionPerformed(evt);
             }
         });
-        add(manageOrganizationJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, -1, -1));
+        add(manageOrganizationJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 180, -1));
 
         enterpriseLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         enterpriseLabel.setText("Restaurant :");
-        add(enterpriseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 120, 30));
+        add(enterpriseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 120, 30));
 
         valueLabel.setText("<value>");
-        add(valueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, 130, -1));
+        add(valueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 100, 130, 30));
     }// </editor-fold>//GEN-END:initComponents
 
     private void userJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userJButtonActionPerformed

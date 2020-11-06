@@ -5,12 +5,12 @@
 package userinterface.CustomerRole;
 
 import Business.EcoSystem;
-
 import Business.UserAccount.UserAccount;
-import Business.WorkQueue.WorkRequest;
+import Business.UserAccount.UserAccountDirectory;
 import java.awt.CardLayout;
+import java.awt.Component;
 import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
+import userinterface.SystemAdminWorkArea.SystemAdminWorkAreaJPanel;
 
 /**
  *
@@ -19,25 +19,18 @@ import javax.swing.table.DefaultTableModel;
 public class CustomerAreaJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
-
-    private UserAccount userAccount;
+    private UserAccount account;
+    private EcoSystem system;
     /**
      * Creates new form DoctorWorkAreaJPanel
      */
-    public CustomerAreaJPanel(JPanel userProcessContainer, UserAccount account) {
+    public CustomerAreaJPanel(JPanel userProcessContainer, UserAccount account, EcoSystem system) {
         initComponents();
         
         this.userProcessContainer = userProcessContainer;
+        this.system = system;
       
-        this.userAccount = account;
-        //valueLabel.setText(enterprise.getName());
-        populateRequestTable();
     }
-    
-    public void populateRequestTable(){
-        
-    }
-
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,123 +41,70 @@ public class CustomerAreaJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        workRequestJTable = new javax.swing.JTable();
-        requestTestJButton = new javax.swing.JButton();
-        refreshTestJButton = new javax.swing.JButton();
-        enterpriseLabel = new javax.swing.JLabel();
-        valueLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        btnPlaceOrder = new javax.swing.JButton();
+        btnViewOrder = new javax.swing.JButton();
 
-        workRequestJTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Message", "Receiver", "Status", "Result"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("Customer Work Area");
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(workRequestJTable);
-        if (workRequestJTable.getColumnModel().getColumnCount() > 0) {
-            workRequestJTable.getColumnModel().getColumn(0).setResizable(false);
-            workRequestJTable.getColumnModel().getColumn(1).setResizable(false);
-            workRequestJTable.getColumnModel().getColumn(2).setResizable(false);
-            workRequestJTable.getColumnModel().getColumn(3).setResizable(false);
-        }
-
-        requestTestJButton.setText("Request Test");
-        requestTestJButton.addActionListener(new java.awt.event.ActionListener() {
+        btnPlaceOrder.setText("Place Order>>>");
+        btnPlaceOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                requestTestJButtonActionPerformed(evt);
+                btnPlaceOrderActionPerformed(evt);
             }
         });
 
-        refreshTestJButton.setText("Refresh");
-        refreshTestJButton.addActionListener(new java.awt.event.ActionListener() {
+        btnViewOrder.setText("View Order>>>");
+        btnViewOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshTestJButtonActionPerformed(evt);
+                btnViewOrderActionPerformed(evt);
             }
         });
-
-        enterpriseLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        enterpriseLabel.setText("EnterPrise :");
-
-        valueLabel.setText("<value>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(179, 179, 179)
+                .addGap(146, 146, 146)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(165, 165, 165))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(requestTestJButton)
-                        .addGap(86, 86, 86))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(enterpriseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(160, 160, 160)
-                .addComponent(refreshTestJButton)
-                .addGap(103, 103, 103))
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnPlaceOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnViewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(167, 167, 167))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(refreshTestJButton)
-                        .addComponent(enterpriseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(requestTestJButton)
-                .addGap(202, 202, 202))
+                .addGap(70, 70, 70)
+                .addComponent(jLabel1)
+                .addGap(54, 54, 54)
+                .addComponent(btnPlaceOrder)
+                .addGap(36, 36, 36)
+                .addComponent(btnViewOrder)
+                .addGap(97, 97, 97))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void requestTestJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestTestJButtonActionPerformed
-        
-        
-        
-    }//GEN-LAST:event_requestTestJButtonActionPerformed
+    private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
+//        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
+//        userProcessContainer.add(new BookFlightJPanel(userProcessContainer,account,airlinerDir));
+//        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
-    private void refreshTestJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshTestJButtonActionPerformed
-
-        populateRequestTable();
-        
-    }//GEN-LAST:event_refreshTestJButtonActionPerformed
+    private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
+//        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
+//        userProcessContainer.add(new ViewOrderJPanel(userProcessContainer, account));
+//        layout.next(userProcessContainer);
+    }//GEN-LAST:event_btnViewOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel enterpriseLabel;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton refreshTestJButton;
-    private javax.swing.JButton requestTestJButton;
-    private javax.swing.JLabel valueLabel;
-    private javax.swing.JTable workRequestJTable;
+    private javax.swing.JButton btnPlaceOrder;
+    private javax.swing.JButton btnViewOrder;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
