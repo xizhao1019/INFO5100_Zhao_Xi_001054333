@@ -5,10 +5,26 @@
  */
 package Business.Restaurant;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author harold
  */
 public class RestaurantDirectory {
-    
+    private ArrayList<Restaurant> restaurantList;
+
+    public RestaurantDirectory() {
+        restaurantList = new ArrayList();
+    }
+
+    public ArrayList<Restaurant> getRestaurantList() {
+        return restaurantList;
+    }
+
+    public Restaurant createRestaurant(){
+        Restaurant restaurant = new Restaurant();
+        restaurantList.add(restaurant);
+        return restaurant;
+    }
 }

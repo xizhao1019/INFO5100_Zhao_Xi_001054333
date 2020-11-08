@@ -6,19 +6,13 @@ package userinterface;
 
 import Business.EcoSystem;
 import Business.DB4OUtil.DB4OUtil;
-import Business.Employee.Employee;
-
-import Business.Role.Role;
+import Business.City.City;
+import Business.Area.Area;
+import Business.Organization;
 import Business.UserAccount.UserAccount;
-import Business.UserAccount.UserAccountDirectory;
 import java.awt.CardLayout;
-import java.awt.Component;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import userinterface.CustomerRole.CustomerAreaJPanel;
-import userinterface.DeliveryManRole.DeliveryManWorkAreaJPanel;
-import userinterface.RestaurantAdminRole.RestaurantWorkAreaJPanel;
-import userinterface.SystemAdminWorkArea.SystemAdminWorkAreaJPanel;
 
 /**
  *
@@ -31,34 +25,13 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     private EcoSystem system;
     private DB4OUtil dB4OUtil = DB4OUtil.getInstance();
-    private UserAccountDirectory userAccountDir;
-    private Employee employee;
-    private JPanel upc;
-    private Role SysAdmin;
-    private Role RestaurantAdmin;
-    private Role Customer;
-    private Role Delivery;
-    private UserAccount sysadmin;
-    private UserAccount customer;
-    private UserAccount restaurant;
-    private UserAccount delivery;
-
 
     public MainJFrame() {
         initComponents();
         system = dB4OUtil.retrieveSystem();
         this.setSize(1680, 1050);
-        userAccountDir = system.getUserAccountDirectory();
     }
 
-    private void createAccount(){
-        userAccountDir = system.getUserAccountDirectory();
-        sysadmin = userAccountDir.createUserAccount("sysadmin", "123abc", employee,SysAdmin);
-        customer = userAccountDir.createUserAccount("customer", "123abc", employee, Customer);
-        restaurant = userAccountDir.createUserAccount("Pho", "123abc", employee, RestaurantAdmin);
-        delivery = userAccountDir.createUserAccount("delivery", "123abc", employee, Delivery);
-        dB4OUtil.storeSystem(system);
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -166,64 +139,63 @@ public class MainJFrame extends javax.swing.JFrame {
         CardLayout crdLyt = (CardLayout) container.getLayout();
         crdLyt.next(container);
         dB4OUtil.storeSystem(system);
+        
+        txtUserName.setText("");
+        txtPassword.setText("");
+        
         btnLogin.setEnabled(true);
         
     }//GEN-LAST:event_logoutJButtonActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         
-        for (int i = 0; i < userAccountDir.getUserAccountList().size(); i++) {
-            userAccountDir.getUserAccountList().remove(i);
-        }
-        
-        for (int i = 0; i < userAccountDir.getUserAccountList().size(); i++) {
-            
-        System.out.println("username: " + userAccountDir.getUserAccountList().get(i).getUsername());
-        System.out.println("Password: " + userAccountDir.getUserAccountList().get(i).getPassword());
-        System.out.println("Role: " + userAccountDir.getUserAccountList().get(i).getRole());
-
-            System.out.println("");
-
-        }
-         
         String username = txtUserName.getText();
         String password = String.valueOf(txtPassword.getPassword());
-        UserAccount ua = userAccountDir.authenticateUser(username,password);
+        UserAccount ua = system.getUserAccountDirectory().authenticateUser(username,password);
+        
+        City inCity=null;
+        Organization inOrganization=null;
+        
+        if(ua==null){
+            for(Area region:system.getAreaList()){
+                for(City enterprise:region.getCityList().getCityList()){
+                    ua=enterprise.getUserAccountDirectory().authenticateUser(username, password);
+                    if(ua==null){
+                       for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
+                           ua=organization.getUserAccountDirectory().authenticateUser(username, password);
+                           if(ua!=null){
+                               inCity=enterprise;
+                               inOrganization=organization;
+                               break;
+                           }
+                       }
+                        
+                    }
+                    else{
+                       inCity=enterprise;
+                       break;
+                    }
+                    if(inOrganization!=null){
+                        break;
+                    }  
+                }
+                if(inCity!=null){
+                    break;
+                }
+            }
+        }
         
         if (ua != null) {
+            CardLayout layout=(CardLayout)container.getLayout();
+            container.add("workArea",ua.getRole().createWorkArea(container, ua, system));
+            layout.next(container);
             logoutJButton.setEnabled(true);
-            btnLogin.setEnabled(false);
-//            if (ua.getUsername().equals("sysadmin") & ua.getPassword().equals("123abc")) {
-//            CardLayout layout = (CardLayout)container.getLayout();
-//            Component sawajp = new SystemAdminWorkAreaJPanel(upc,system);
-//            container.add(sawajp,"WorkAreaJPanel");
-//            layout.next(container);
-//            }
-//            else if (ua.getUsername().equals("customer") & ua.getPassword().equals("123abc")) {
-//            CardLayout layout = (CardLayout)container.getLayout();
-//            Component cwajp = new CustomerAreaJPanel(upc,customer,system);
-//            container.add(cwajp,"CustomerAreaJPanel");
-//            layout.next(container);
-//            }
-//            else if (ua.getUsername().equals("Pho") & ua.getPassword().equals("123abc")) {
-//            CardLayout layout = (CardLayout)container.getLayout();
-//            Component rwajp = new RestaurantWorkAreaJPanel(upc,restaurant);
-//            container.add(rwajp,"RestaurantWorkAreaJPanel");
-//            layout.next(container);
-//            }
-//            else if (ua.getUsername().equals("delivery") & ua.getPassword().equals("123abc")) {
-//            CardLayout layout = (CardLayout)container.getLayout();
-//            Component dwajp = new DeliveryManWorkAreaJPanel(upc,delivery,system);
-//            container.add(dwajp,"DeliveryManWorkAreaJPanel");
-//            layout.next(container);
-//            }
         }
         else {
         JOptionPane.showMessageDialog(null,"Wrong username or password!", "Warning", JOptionPane.WARNING_MESSAGE);
             txtUserName.setText("");
             txtPassword.setText("");
         }
-        
        
     }//GEN-LAST:event_btnLoginActionPerformed
 

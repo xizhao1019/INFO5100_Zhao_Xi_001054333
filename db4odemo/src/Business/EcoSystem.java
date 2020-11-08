@@ -6,36 +6,39 @@
 package Business;
 
 
-import Business.Customer.CustomerDirectory;
-import Business.DeliveryMan.DeliveryManDirectory;
-import Business.Restaurant.RestaurantDirectory;
+
+import Business.Area.Area;
 import Business.Role.Role;
 import Business.Role.SystemAdminRole;
 import java.util.ArrayList;
 
 /**
  *
- * @author MyPC1
+ * @author zhaoxi
  */
 public class EcoSystem extends Organization{
     
     private static EcoSystem business;
-    private RestaurantDirectory restaurantDirectory;
-    private CustomerDirectory customerDirectory;
-    private DeliveryManDirectory deliveryManDirectory;
-
-    public EcoSystem(RestaurantDirectory restaurantDirectory, CustomerDirectory customerDirectory, DeliveryManDirectory deliveryManDirectory) {
-
-        this.restaurantDirectory = restaurantDirectory;
-        this.customerDirectory = customerDirectory;
-        this.deliveryManDirectory = deliveryManDirectory;
-    }
-    
+    private ArrayList<Area> areaList;
     public static EcoSystem getInstance(){
         if(business==null){
             business=new EcoSystem();
         }
         return business;
+    }
+    
+    public Area createAndAddArea(){
+        Area region=new Area();
+        areaList.add(region);
+        return region;
+    }
+
+    public ArrayList<Area> getAreaList() {
+        return areaList;
+    }
+
+    public void setAreaList(ArrayList<Area> regionList) {
+        this.areaList = regionList;
     }
     
     @Override
@@ -46,12 +49,13 @@ public class EcoSystem extends Organization{
     }
     private EcoSystem(){
         super(null);
-       // networkList=new ArrayList<Network>();
+        areaList = new ArrayList<Area>();
     }
 
-    
     public boolean checkIfUserIsUnique(String userName){
-       //
-       return false;
+       if(!this.getUserAccountDirectory().checkIfUsernameIsUnique(userName)){
+            return false;
+        }
+        return true;
     }
 }
