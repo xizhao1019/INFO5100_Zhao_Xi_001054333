@@ -6,7 +6,7 @@
 package userinterface.SystemAdminWorkArea;
 
 import Business.EcoSystem;
-import Business.City.City;
+import Business.CityRestaurant.CityRestaurant;
 import Business.Area.Area;
 
 import Business.Organization;
@@ -38,11 +38,11 @@ public class SystemAdminWorkAreaJPanel extends javax.swing.JPanel {
         DefaultTreeModel model=(DefaultTreeModel)jTree.getModel();
         
         ArrayList<Area> areaList = ecosystem.getAreaList();
-        ArrayList<City> enterpriseList;
+        ArrayList<CityRestaurant> enterpriseList;
         ArrayList<Organization> organizationList;
         
         Area area;
-        City enterprise;
+        CityRestaurant enterprise;
         Organization organization;
         
         DefaultMutableTreeNode regions = new DefaultMutableTreeNode("Area");
@@ -59,7 +59,7 @@ public class SystemAdminWorkAreaJPanel extends javax.swing.JPanel {
             networkNode=new DefaultMutableTreeNode(area.getName());
             regions.insert(networkNode, i);
             
-            enterpriseList=area.getCityList().getCityList();
+            enterpriseList=area.getCityList().getCityRestaurantList();
             for(int j=0; j<enterpriseList.size();j++){
                 enterprise=enterpriseList.get(j);
                 enterpriseNode=new DefaultMutableTreeNode(enterprise.getName());

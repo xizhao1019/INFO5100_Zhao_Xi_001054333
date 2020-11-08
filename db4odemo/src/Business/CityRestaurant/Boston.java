@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Business.City;
+package Business.CityRestaurant;
 
 import Business.Role.Role;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author zhaoxi
  */
-public class Boston extends City {
+public class Boston extends CityRestaurant {
     
     public Boston(String name){
         super(name,CityName.Boston);

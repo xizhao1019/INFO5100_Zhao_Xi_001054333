@@ -5,7 +5,7 @@
  */
 package Business.Area;
 
-import Business.City.CityList;
+import Business.CityRestaurant.CityRestaurantList;
 
 /**
  *
@@ -13,10 +13,10 @@ import Business.City.CityList;
  */
 public class Area {
     private String name;
-    private CityList CityList;
+    private CityRestaurantList CityList;
     
     public Area(){
-        CityList=new CityList();
+        CityList=new CityRestaurantList();
     }
     public String getName() {
         return name;
@@ -26,7 +26,7 @@ public class Area {
         this.name = name;
     }
 
-    public CityList getCityList() {
+    public CityRestaurantList getCityList() {
         return CityList;
     }
     

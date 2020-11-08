@@ -6,7 +6,7 @@
 package Business.Restaurant;
 
 import Business.Organization;
-import Business.Role.RestaurantRole;
+import Business.Role.RestaurantAdminRole;
 import Business.Role.Role;
 import java.util.ArrayList;
 
@@ -14,17 +14,26 @@ import java.util.ArrayList;
  *
  * @author harold
  */
-public class Restaurant extends Organization{
+public class RestaurantAdmin extends Organization{
 
-    public Restaurant() {
+    private MenuList menuList;
+    public RestaurantAdmin() {
         super(Type.RestaurantAdmin.getValue());
+        menuList = new MenuList();
     }
 
+    public MenuList getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(MenuList menuList) {
+        this.menuList = menuList;
+    }
     
     @Override
     public ArrayList<Role> getSupportedRole() {
         ArrayList<Role> roles = new ArrayList();
-        roles.add(new RestaurantRole());
+        roles.add(new RestaurantAdminRole());
         return roles;
     }
     

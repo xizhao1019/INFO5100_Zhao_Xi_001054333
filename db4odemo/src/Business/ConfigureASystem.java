@@ -1,7 +1,7 @@
 package Business;
 
 import Business.Employee.Employee;
-import Business.City.City;
+import Business.CityRestaurant.CityRestaurant;
 import Business.Area.Area;
 import Business.Role.SystemAdminRole;
 import Business.UserAccount.UserAccount;

@@ -6,7 +6,7 @@ package userinterface;
 
 import Business.EcoSystem;
 import Business.DB4OUtil.DB4OUtil;
-import Business.City.City;
+import Business.CityRestaurant.CityRestaurant;
 import Business.Area.Area;
 import Business.Organization;
 import Business.UserAccount.UserAccount;
@@ -153,12 +153,12 @@ public class MainJFrame extends javax.swing.JFrame {
         String password = String.valueOf(txtPassword.getPassword());
         UserAccount ua = system.getUserAccountDirectory().authenticateUser(username,password);
         
-        City inCity=null;
+        CityRestaurant inCity=null;
         Organization inOrganization=null;
         
         if(ua==null){
             for(Area region:system.getAreaList()){
-                for(City enterprise:region.getCityList().getCityList()){
+                for(CityRestaurant enterprise:region.getCityList().getCityRestaurantList()){
                     ua=enterprise.getUserAccountDirectory().authenticateUser(username, password);
                     if(ua==null){
                        for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){

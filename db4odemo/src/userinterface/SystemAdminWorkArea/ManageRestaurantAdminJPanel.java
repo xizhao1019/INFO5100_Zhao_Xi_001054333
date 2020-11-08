@@ -6,10 +6,10 @@
 package userinterface.SystemAdminWorkArea;
 
 import Business.Area.Area;
-import Business.City.City;
+import Business.CityRestaurant.CityRestaurant;
 import Business.EcoSystem;
 import Business.Employee.Employee;
-import Business.Role.RestaurantRole;
+import Business.Role.RestaurantAdminRole;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -43,7 +43,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
             areaComboBox.addItem(area);
         }
         
-        for (City.CityName cityname : City.CityName.values()) {
+        for (CityRestaurant.CityName cityname : CityRestaurant.CityName.values()) {
             cityNameComboBox.addItem(cityname);
         }
     }
@@ -52,7 +52,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
     private void populateRestaurantComboBox(Area area){
         restaurantNameComboBox.removeAllItems();
         
-        for (City city : area.getCityList().getCityList()){
+        for (CityRestaurant city : area.getCityList().getCityRestaurantList()){
             restaurantNameComboBox.addItem(city);
         }
         
@@ -63,7 +63,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
 
         model.setRowCount(0);
         for (Area area : system.getAreaList()) {
-            for (City city : area.getCityList().getCityList()) {
+            for (CityRestaurant city : area.getCityList().getCityRestaurantList()) {
                 for (UserAccount userAccount : city.getUserAccountDirectory().getUserAccountList()) {
                     Object[] row = new Object[6];
                     row[0] = area.getName();
@@ -246,7 +246,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitJButtonActionPerformed
-        City city = (City) restaurantNameComboBox.getSelectedItem();
+        CityRestaurant city = (CityRestaurant) restaurantNameComboBox.getSelectedItem();
         
         String username = txtUsername.getText();
         String password = txtPassword.getText();
@@ -254,7 +254,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
         String adminName = txtAdminName.getText();
         Employee employee = city.getEmployeeDirectory().createEmployee(adminName);
 
-        UserAccount account = city.getUserAccountDirectory().createUserAccount(username, password, employee, new RestaurantRole());
+        UserAccount account = city.getUserAccountDirectory().createUserAccount(username, password, employee, new RestaurantAdminRole());
         populateTable();
 
     }//GEN-LAST:event_submitJButtonActionPerformed
@@ -271,7 +271,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
 
     private void cityNameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityNameComboBoxActionPerformed
         Area area = (Area) areaComboBox.getSelectedItem();
-        City.CityName cityname = (City.CityName)cityNameComboBox.getSelectedItem();
+        CityRestaurant.CityName cityname = (CityRestaurant.CityName)cityNameComboBox.getSelectedItem();
         if (area != null & cityname != null) {
             populateRestaurantComboBox(area);
         }

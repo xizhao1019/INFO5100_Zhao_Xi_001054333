@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  *
  * @author raunak
  */
-public class RestaurantRole extends Role{
+public class RestaurantAdminRole extends Role{
 
     @Override
     public JPanel createWorkArea(JPanel userProcessContainer, UserAccount account, EcoSystem business) {

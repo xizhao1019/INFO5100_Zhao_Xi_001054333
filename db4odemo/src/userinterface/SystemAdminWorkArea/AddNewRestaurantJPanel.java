@@ -7,7 +7,7 @@
 package userinterface.SystemAdminWorkArea;
 
 import Business.Area.Area;
-import Business.City.City;
+import Business.CityRestaurant.CityRestaurant;
 import Business.EcoSystem;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -39,7 +39,7 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
 
         model.setRowCount(0);
         for (Area area : system.getAreaList()) {
-            for (City city : area.getCityList().getCityList()) {
+            for (CityRestaurant city : area.getCityList().getCityRestaurantList()) {
                 Object[] row = new Object[3];
                 row[0] = area.getName();
                 row[1] = city.getCityName().getValue();
@@ -58,7 +58,7 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
             areaComboBox.addItem(area);
         }
 
-        for (City.CityName cityname : City.CityName.values()) {
+        for (CityRestaurant.CityName cityname : CityRestaurant.CityName.values()) {
             cityNameComboBox.addItem(cityname);
         }
 
@@ -190,7 +190,7 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
     private void submitJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitJButtonActionPerformed
 
         Area area = (Area) areaComboBox.getSelectedItem();
-        City.CityName cityname = (City.CityName) cityNameComboBox.getSelectedItem();
+        CityRestaurant.CityName cityname = (CityRestaurant.CityName) cityNameComboBox.getSelectedItem();
 
         if (area == null || cityname == null) {
             JOptionPane.showMessageDialog(null, "Invalid Input!");
@@ -199,7 +199,7 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
 
         String restaurantName = txtRestaurantName.getText();
 
-        City city = area.getCityList().createAndAddCity(restaurantName, cityname);
+        CityRestaurant restaurant = area.getCityList().createAndAddCityRestaurant(restaurantName, cityname);
 
         populateTable();
     }//GEN-LAST:event_submitJButtonActionPerformed

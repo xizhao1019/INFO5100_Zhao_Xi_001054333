@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Business.City;
+package Business.CityRestaurant;
 
 import Business.Organization;
 import Business.OrganizationDirectory;
@@ -12,7 +12,7 @@ import Business.OrganizationDirectory;
  *
  * @author zhaoxi
  */
-public abstract class City extends Organization{
+public abstract class CityRestaurant extends Organization{
     
     private CityName CityName;
     private OrganizationDirectory organizationDirectory;
@@ -46,7 +46,7 @@ public abstract class City extends Organization{
         this.CityName = enterpriseType;
     }
     
-    public City(String restaurantname,CityName cityname){
+    public CityRestaurant(String restaurantname,CityName cityname){
         super(restaurantname);
         this.CityName=cityname;
         organizationDirectory=new OrganizationDirectory();
