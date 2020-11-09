@@ -52,8 +52,8 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
     private void populateRestaurantComboBox(Area area){
         restaurantNameComboBox.removeAllItems();
         
-        for (CityRestaurant city : area.getCityList().getCityRestaurantList()){
-            restaurantNameComboBox.addItem(city);
+        for (CityRestaurant restaurant : area.getCityRestaurantList().getCityRestaurantList()){
+            restaurantNameComboBox.addItem(restaurant);
         }
         
     }
@@ -63,7 +63,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
 
         model.setRowCount(0);
         for (Area area : system.getAreaList()) {
-            for (CityRestaurant city : area.getCityList().getCityRestaurantList()) {
+            for (CityRestaurant city : area.getCityRestaurantList().getCityRestaurantList()) {
                 for (UserAccount userAccount : city.getUserAccountDirectory().getUserAccountList()) {
                     Object[] row = new Object[6];
                     row[0] = area.getName();
@@ -113,7 +113,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Area", "City", "Restaurant Name", "Admin Name", "Username", "Password"
+                "Area", "City", "Restaurant", "Admin Name", "Username", "Password"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -127,6 +127,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(enterpriseJTable);
         if (enterpriseJTable.getColumnModel().getColumnCount() > 0) {
             enterpriseJTable.getColumnModel().getColumn(0).setResizable(false);
+            enterpriseJTable.getColumnModel().getColumn(0).setPreferredWidth(100);
             enterpriseJTable.getColumnModel().getColumn(1).setResizable(false);
             enterpriseJTable.getColumnModel().getColumn(1).setPreferredWidth(30);
             enterpriseJTable.getColumnModel().getColumn(2).setResizable(false);
@@ -191,12 +192,12 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
                             .addComponent(jLabel6))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(restaurantNameComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                            .addComponent(areaComboBox, 0, 136, Short.MAX_VALUE)
-                            .addComponent(cityNameComboBox, 0, 136, Short.MAX_VALUE)
+                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                             .addComponent(txtAdminName)
-                            .addComponent(txtPassword)))
+                            .addComponent(txtPassword)
+                            .addComponent(areaComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cityNameComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(restaurantNameComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(backJButton))
@@ -205,8 +206,8 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
                         .addComponent(submitJButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,15 +247,15 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitJButtonActionPerformed
-        CityRestaurant city = (CityRestaurant) restaurantNameComboBox.getSelectedItem();
+        CityRestaurant cityRestaurant = (CityRestaurant) restaurantNameComboBox.getSelectedItem();
         
         String username = txtUsername.getText();
         String password = txtPassword.getText();
 //        String restaurantName = String.valueOf(restaurantNameComboBox.getSelectedItem());
         String adminName = txtAdminName.getText();
-        Employee employee = city.getEmployeeDirectory().createEmployee(adminName);
+        Employee employee = cityRestaurant.getEmployeeDirectory().createEmployee(adminName);
 
-        UserAccount account = city.getUserAccountDirectory().createUserAccount(username, password, employee, new RestaurantAdminRole());
+        UserAccount account = cityRestaurant.getUserAccountDirectory().createUserAccount(username, password, employee, new RestaurantAdminRole());
         populateTable();
 
     }//GEN-LAST:event_submitJButtonActionPerformed

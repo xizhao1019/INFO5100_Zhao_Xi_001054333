@@ -4,6 +4,7 @@
  */
 package Business.Role;
 
+import Business.CityRestaurant.CityRestaurant;
 import Business.EcoSystem;
 
 import Business.Organization;
@@ -39,6 +40,8 @@ public abstract class Role {
     
     public abstract JPanel createWorkArea(JPanel userProcessContainer, 
             UserAccount account,  
+            Organization organization, 
+            CityRestaurant restaurant, 
             EcoSystem business);
 
     @Override

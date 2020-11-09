@@ -5,8 +5,8 @@
  */
 package userinterface.RestaurantAdminRole;
 
-import Business.Restaurant.Menu;
-import Business.Restaurant.RestaurantAdmin;
+import Business.CityRestaurant.CityRestaurant;
+import Business.CityRestaurant.Menu;
 import java.awt.CardLayout;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
@@ -20,30 +20,33 @@ import javax.swing.table.DefaultTableModel;
 public class ManageMenuJPanel extends javax.swing.JPanel {
 
     private JPanel userProcessContainer;
-    private RestaurantAdmin admin;
+    private CityRestaurant restaurant;
+    private Menu menu;
+    
     /**
      * Creates new form ManageMenuJPanel
      */
-    public ManageMenuJPanel(JPanel userProcessContainer, RestaurantAdmin admin) {
+    public ManageMenuJPanel(JPanel userProcessContainer, CityRestaurant restaurant) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
-        this.admin = admin;
+        this.restaurant = restaurant;
+        
         populateTable();
+        
     }
     
     private void populateTable(){
         DefaultTableModel model = (DefaultTableModel) menuTable.getModel();
         DecimalFormat df = new DecimalFormat("#.00"); 
         model.setRowCount(0);
-        for (Menu menu : admin.getMenuList().getMenuList()) {
+            for (Menu menu : restaurant.getMenuList().getMenuList()) {
             Object[] row = new Object[2];
             row[0] = menu;
             row[1] = df.format(menu.getPrice());
             
             model.addRow(row);
+            }
         }
-        
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -199,15 +202,13 @@ public class ManageMenuJPanel extends javax.swing.JPanel {
         
         if (!dish.trim().equals("") & !stringPrice.trim().equals("")) {
             price = Double.parseDouble(stringPrice);
-            
-            Menu menu = admin.getMenuList().addMenu();
+            menu = restaurant.getMenuList().addMenu();
             menu.setDish(dish);
             menu.setPrice(price);
 
             txtDish.setText("");
             txtPrice.setText("");
-            txtDish.setEnabled(false);
-            txtPrice.setEnabled(false);
+            
             populateTable();
             
             btnUpdate.setEnabled(true);
@@ -225,7 +226,7 @@ public class ManageMenuJPanel extends javax.swing.JPanel {
             return;
         }
         Menu menu = (Menu)menuTable.getValueAt(row, 0);
-        admin.getMenuList().getMenuList().remove(menu);
+        restaurant.getMenuList().getMenuList().remove(menu);
         populateTable();
     }//GEN-LAST:event_btnDeleteActionPerformed
 

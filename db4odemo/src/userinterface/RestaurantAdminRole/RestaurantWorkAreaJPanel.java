@@ -3,6 +3,9 @@
 package userinterface.RestaurantAdminRole;
 
 
+import Business.CityRestaurant.CityRestaurant;
+import Business.CityRestaurant.CityRestaurantList;
+import Business.EcoSystem;
 import Business.Restaurant.RestaurantAdmin;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
@@ -16,13 +19,18 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
     
     private JPanel userProcessContainer;
     private UserAccount account;
+    private CityRestaurant restaurant;
+    private EcoSystem business;
     
     /** Creates new form AdminWorkAreaJPanel */
-    public RestaurantWorkAreaJPanel(JPanel userProcessContainer,UserAccount account) {
+    public RestaurantWorkAreaJPanel(JPanel userProcessContainer, UserAccount account, 
+            CityRestaurant restaurant, EcoSystem business) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
         this.account = account;
-        valueLabel.setText(account.getUsername());
+        this.restaurant = restaurant;
+        this.business = business;
+        valueLabel.setText(restaurant.getName());
     }
     
     /** This method is called from within the constructor to
@@ -45,13 +53,13 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
         jLabel1.setText("Reataurant Adminstrative Work Area");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, -1));
 
-        btnManagerMenu.setText("Manage menu");
+        btnManagerMenu.setText("Manage Menu");
         btnManagerMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnManagerMenuActionPerformed(evt);
             }
         });
-        add(btnManagerMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 210, 180, -1));
+        add(btnManagerMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 180, -1));
 
         btnManageOrder.setText("Manage Orders");
         btnManageOrder.addActionListener(new java.awt.event.ActionListener() {
@@ -59,10 +67,10 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
                 btnManageOrderActionPerformed(evt);
             }
         });
-        add(btnManageOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 180, -1));
+        add(btnManageOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 180, -1));
 
         enterpriseLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        enterpriseLabel.setText("Restaurant Admin:");
+        enterpriseLabel.setText("Your Restaurant:");
         add(enterpriseLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 140, 30));
 
         valueLabel.setText("<value>");
@@ -70,7 +78,7 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnManagerMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagerMenuActionPerformed
-        ManageMenuJPanel manageMenuJPanel=new ManageMenuJPanel(userProcessContainer,new RestaurantAdmin());
+        ManageMenuJPanel manageMenuJPanel = new ManageMenuJPanel(userProcessContainer,restaurant);
         userProcessContainer.add("ManageMenuJPanel",manageMenuJPanel);
         CardLayout layout=(CardLayout)userProcessContainer.getLayout();
         layout.next(userProcessContainer);

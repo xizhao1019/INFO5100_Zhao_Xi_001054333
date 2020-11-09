@@ -27,13 +27,13 @@ public class CityRestaurantList {
         cityRestaurantList=new ArrayList<CityRestaurant>();
     }
     
-    //Create city
-    public CityRestaurant createAndAddCityRestaurant(String name,CityRestaurant.CityName type){
-        CityRestaurant city=null;
+
+    public CityRestaurant createAndAddCityRestaurant(String restaurantName,CityRestaurant.CityName type){
+        CityRestaurant restaurant=null;
         if(type==CityRestaurant.CityName.Boston){
-            city=new Boston(name);
-            cityRestaurantList.add(city);
+            restaurant=new BostonRestaurant(restaurantName);
+            cityRestaurantList.add(restaurant);
         }
-        return city;
+        return restaurant;
     }
 }

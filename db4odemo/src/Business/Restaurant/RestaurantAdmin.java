@@ -16,20 +16,10 @@ import java.util.ArrayList;
  */
 public class RestaurantAdmin extends Organization{
 
-    private MenuList menuList;
     public RestaurantAdmin() {
         super(Type.RestaurantAdmin.getValue());
-        menuList = new MenuList();
     }
 
-    public MenuList getMenuList() {
-        return menuList;
-    }
-
-    public void setMenuList(MenuList menuList) {
-        this.menuList = menuList;
-    }
-    
     @Override
     public ArrayList<Role> getSupportedRole() {
         ArrayList<Role> roles = new ArrayList();

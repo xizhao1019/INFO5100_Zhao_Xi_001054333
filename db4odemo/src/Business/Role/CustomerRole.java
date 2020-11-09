@@ -4,6 +4,8 @@
  */
 package Business.Role;
 
+import Business.CityRestaurant.CityRestaurant;
+import Business.Customer.Customer;
 import Business.EcoSystem;
 
 import Business.Organization;
@@ -18,8 +20,10 @@ import javax.swing.JPanel;
 public class CustomerRole extends Role{
 
     
-    public JPanel createWorkArea(JPanel userProcessContainer, UserAccount account, EcoSystem business) {
-        return new CustomerAreaJPanel(userProcessContainer, account,business);
+    @Override
+    public JPanel createWorkArea(JPanel userProcessContainer, UserAccount account, Organization organization, 
+            CityRestaurant restaurant,EcoSystem business) {
+        return new CustomerAreaJPanel(userProcessContainer, account, business);
     }
     
     

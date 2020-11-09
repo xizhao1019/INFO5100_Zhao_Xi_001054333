@@ -4,6 +4,8 @@
  */
 package userinterface.CustomerRole;
 
+import Business.CityRestaurant.CityRestaurant;
+import Business.Customer.Customer;
 import Business.EcoSystem;
 import Business.UserAccount.UserAccount;
 import Business.UserAccount.UserAccountDirectory;
@@ -24,11 +26,13 @@ public class CustomerAreaJPanel extends javax.swing.JPanel {
     /**
      * Creates new form DoctorWorkAreaJPanel
      */
-    public CustomerAreaJPanel(JPanel userProcessContainer, UserAccount account, EcoSystem system) {
+    public CustomerAreaJPanel(JPanel userProcessContainer, UserAccount account, EcoSystem business) {
         initComponents();
-        
         this.userProcessContainer = userProcessContainer;
+        this.account = account;
         this.system = system;
+        
+        txtCustomername.setText(account.getUsername());
       
     }
     
@@ -44,6 +48,8 @@ public class CustomerAreaJPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         btnPlaceOrder = new javax.swing.JButton();
         btnViewOrder = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtCustomername = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Customer Work Area");
@@ -62,38 +68,55 @@ public class CustomerAreaJPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Welcome ,");
+
+        txtCustomername.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtCustomername.setText("user_name");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(146, 146, 146)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnPlaceOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnViewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(167, 167, 167))
+                        .addGap(147, 147, 147)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(193, 193, 193)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btnPlaceOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnViewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCustomername, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(166, 166, 166))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(70, 70, 70)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel1)
-                .addGap(54, 54, 54)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtCustomername))
+                .addGap(46, 46, 46)
                 .addComponent(btnPlaceOrder)
                 .addGap(36, 36, 36)
                 .addComponent(btnViewOrder)
-                .addGap(97, 97, 97))
+                .addGap(85, 85, 85))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
-//        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
-//        userProcessContainer.add(new BookFlightJPanel(userProcessContainer,account,airlinerDir));
-//        layout.next(userProcessContainer);
+        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
+        PlaceOrderJPanel pojp = new PlaceOrderJPanel(userProcessContainer,account,system);
+        userProcessContainer.add("PlaceOrderJPanel", pojp);
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
     private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
@@ -106,5 +129,7 @@ public class CustomerAreaJPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnPlaceOrder;
     private javax.swing.JButton btnViewOrder;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel txtCustomername;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,9 +12,9 @@ import java.util.ArrayList;
  *
  * @author zhaoxi
  */
-public class Boston extends CityRestaurant {
+public class BostonRestaurant extends CityRestaurant {
     
-    public Boston(String name){
+    public BostonRestaurant(String name){
         super(name,CityName.Boston);
     }
     @Override

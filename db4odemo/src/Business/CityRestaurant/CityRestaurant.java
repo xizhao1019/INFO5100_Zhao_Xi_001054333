@@ -8,6 +8,7 @@ package Business.CityRestaurant;
 import Business.Organization;
 import Business.OrganizationDirectory;
 
+
 /**
  *
  * @author zhaoxi
@@ -15,10 +16,18 @@ import Business.OrganizationDirectory;
 public abstract class CityRestaurant extends Organization{
     
     private CityName CityName;
-    private OrganizationDirectory organizationDirectory;
+    private MenuList menuList;
+    private OrganizationDirectory orgDirectory;
 
+    public CityRestaurant(String restaurantname,CityName cityname){
+        super(restaurantname);
+        this.CityName=cityname;
+        orgDirectory = new OrganizationDirectory();
+        menuList = new MenuList();
+    }
+    
     public OrganizationDirectory getOrganizationDirectory() {
-        return organizationDirectory;
+        return orgDirectory;
     }
 
     public enum CityName{
@@ -46,10 +55,14 @@ public abstract class CityRestaurant extends Organization{
         this.CityName = enterpriseType;
     }
     
-    public CityRestaurant(String restaurantname,CityName cityname){
-        super(restaurantname);
-        this.CityName=cityname;
-        organizationDirectory=new OrganizationDirectory();
+
+    public MenuList getMenuList() {
+        return menuList;
     }
+
+    public void setMenuList(MenuList menuList) {
+        this.menuList = menuList;
+    }
+    
 }
 

@@ -8,6 +8,8 @@ import Business.EcoSystem;
 import Business.DB4OUtil.DB4OUtil;
 import Business.CityRestaurant.CityRestaurant;
 import Business.Area.Area;
+import Business.Customer.Customer;
+import Business.DeliveryMan.DeliveryMan;
 import Business.Organization;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
@@ -132,7 +134,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logoutJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutJButtonActionPerformed
-        logoutJButton.setEnabled(false);
+        
         container.removeAll();
         JPanel blankJP = new JPanel();
         container.add("blank", blankJP);
@@ -154,11 +156,14 @@ public class MainJFrame extends javax.swing.JFrame {
         UserAccount ua = system.getUserAccountDirectory().authenticateUser(username,password);
         
         CityRestaurant inCity=null;
+        Customer inCustomer = null;
+        DeliveryMan inDelivery = null;
+        
         Organization inOrganization=null;
         
         if(ua==null){
             for(Area region:system.getAreaList()){
-                for(CityRestaurant enterprise:region.getCityList().getCityRestaurantList()){
+                for(CityRestaurant enterprise:region.getCityRestaurantList().getCityRestaurantList()){
                     ua=enterprise.getUserAccountDirectory().authenticateUser(username, password);
                     if(ua==null){
                        for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
@@ -185,10 +190,36 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         }
         
+        if (ua==null) {
+            for(Area area:system.getAreaList()){
+                for(Customer customer:area.getCustomerDir().getCustomerList()){
+                    ua=customer.getUserAccountDirectory().authenticateUser(username, password);
+                           if(ua!=null){
+                               inCustomer=customer;
+                               break;
+                           }
+                        }    
+                    }
+            }
+            
+        if (ua==null) {
+            for (Area area:system.getAreaList()) {
+                for(DeliveryMan d : area.getDeliveryManDirectory().getDeliveryManList()){
+                    ua=d.getUserAccountDirectory().authenticateUser(username, password);
+                    if (ua!=null) {
+                        inDelivery = d;
+                        break;
+                    }
+                }
+            }
+        }
+                
+        
         if (ua != null) {
             CardLayout layout=(CardLayout)container.getLayout();
-            container.add("workArea",ua.getRole().createWorkArea(container, ua, system));
+            container.add("workArea",ua.getRole().createWorkArea(container, ua,inOrganization, inCity,system));
             layout.next(container);
+            btnLogin.setEnabled(false);
             logoutJButton.setEnabled(true);
         }
         else {

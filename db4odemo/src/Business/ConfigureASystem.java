@@ -1,8 +1,8 @@
 package Business;
 
 import Business.Employee.Employee;
-import Business.CityRestaurant.CityRestaurant;
 import Business.Area.Area;
+import Business.Customer.Customer;
 import Business.Role.SystemAdminRole;
 import Business.UserAccount.UserAccount;
 
@@ -23,12 +23,11 @@ public class ConfigureASystem {
         //create an enterprise
         //initialize some organizations
         //have some employees 
-        //create user account
+        //create customer account
         
+        Employee employee0 = system.getEmployeeDirectory().createEmployee("Xi");
         
-        Employee employee = system.getEmployeeDirectory().createEmployee("Xi");
-        
-        UserAccount ua = system.getUserAccountDirectory().createUserAccount("sysadmin", "sysadmin", employee, new SystemAdminRole());
+        UserAccount ua = system.getUserAccountDirectory().createUserAccount("sysadmin", "sysadmin", employee0, new SystemAdminRole());
         
         return system;
     }

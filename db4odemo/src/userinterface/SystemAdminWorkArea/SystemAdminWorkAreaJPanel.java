@@ -8,7 +8,6 @@ package userinterface.SystemAdminWorkArea;
 import Business.EcoSystem;
 import Business.CityRestaurant.CityRestaurant;
 import Business.Area.Area;
-
 import Business.Organization;
 import java.awt.CardLayout;
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class SystemAdminWorkAreaJPanel extends javax.swing.JPanel {
             networkNode=new DefaultMutableTreeNode(area.getName());
             regions.insert(networkNode, i);
             
-            enterpriseList=area.getCityList().getCityRestaurantList();
+            enterpriseList=area.getCityRestaurantList().getCityRestaurantList();
             for(int j=0; j<enterpriseList.size();j++){
                 enterprise=enterpriseList.get(j);
                 enterpriseNode=new DefaultMutableTreeNode(enterprise.getName());
@@ -238,11 +237,17 @@ public class SystemAdminWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnManageRestaurantActionPerformed
 
     private void btnManageCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageCustomerActionPerformed
-        
+        ManageCustomerJPanel mcjp = new ManageCustomerJPanel(userProcessContainer, ecosystem);
+        userProcessContainer.add("ManageCustomerJPanel",mcjp);
+        CardLayout layout=(CardLayout)userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnManageCustomerActionPerformed
 
     private void btnManageDelivermanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageDelivermanActionPerformed
-       
+       ManageDeliveryJPanel mdjp = new ManageDeliveryJPanel(userProcessContainer,ecosystem);
+       userProcessContainer.add("ManageDeliveryJPanel",mdjp);
+        CardLayout layout=(CardLayout)userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnManageDelivermanActionPerformed
 
     private void jTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTreeValueChanged

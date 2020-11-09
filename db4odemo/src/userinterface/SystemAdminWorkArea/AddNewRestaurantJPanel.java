@@ -39,7 +39,7 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
 
         model.setRowCount(0);
         for (Area area : system.getAreaList()) {
-            for (CityRestaurant city : area.getCityList().getCityRestaurantList()) {
+            for (CityRestaurant city : area.getCityRestaurantList().getCityRestaurantList()) {
                 Object[] row = new Object[3];
                 row[0] = area.getName();
                 row[1] = city.getCityName().getValue();
@@ -193,15 +193,20 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
         CityRestaurant.CityName cityname = (CityRestaurant.CityName) cityNameComboBox.getSelectedItem();
 
         if (area == null || cityname == null) {
-            JOptionPane.showMessageDialog(null, "Invalid Input!");
+            JOptionPane.showMessageDialog(null, "Invalid Input!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         String restaurantName = txtRestaurantName.getText();
+        
+        if (restaurantName.trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Invalid Input!", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            CityRestaurant restaurant = area.getCityRestaurantList().createAndAddCityRestaurant(restaurantName, cityname);
+            populateTable();
+        }
 
-        CityRestaurant restaurant = area.getCityList().createAndAddCityRestaurant(restaurantName, cityname);
-
-        populateTable();
     }//GEN-LAST:event_submitJButtonActionPerformed
 
     private void backJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backJButtonActionPerformed
