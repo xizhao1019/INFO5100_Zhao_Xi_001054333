@@ -4,15 +4,10 @@
  */
 package userinterface.CustomerRole;
 
-import Business.CityRestaurant.CityRestaurant;
-import Business.Customer.Customer;
 import Business.EcoSystem;
 import Business.UserAccount.UserAccount;
-import Business.UserAccount.UserAccountDirectory;
 import java.awt.CardLayout;
-import java.awt.Component;
 import javax.swing.JPanel;
-import userinterface.SystemAdminWorkArea.SystemAdminWorkAreaJPanel;
 
 /**
  *
@@ -26,7 +21,7 @@ public class CustomerAreaJPanel extends javax.swing.JPanel {
     /**
      * Creates new form DoctorWorkAreaJPanel
      */
-    public CustomerAreaJPanel(JPanel userProcessContainer, UserAccount account, EcoSystem business) {
+    public CustomerAreaJPanel(JPanel userProcessContainer, UserAccount account, EcoSystem system) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
         this.account = account;
@@ -114,15 +109,15 @@ public class CustomerAreaJPanel extends javax.swing.JPanel {
 
     private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
         CardLayout layout = (CardLayout)userProcessContainer.getLayout();
-        PlaceOrderJPanel pojp = new PlaceOrderJPanel(userProcessContainer,account,system);
-        userProcessContainer.add("PlaceOrderJPanel", pojp);
+        ChooseRestaurantJPanel crjp = new ChooseRestaurantJPanel(userProcessContainer,account,system);
+        userProcessContainer.add("ChooseRestaurant", crjp);
         layout.next(userProcessContainer);
     }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
     private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
-//        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
-//        userProcessContainer.add(new ViewOrderJPanel(userProcessContainer, account));
-//        layout.next(userProcessContainer);
+        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
+        userProcessContainer.add(new ViewOrderJPanel(userProcessContainer, account));
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnViewOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

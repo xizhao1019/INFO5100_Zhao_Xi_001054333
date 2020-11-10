@@ -9,6 +9,8 @@ import Business.CityRestaurant.CityRestaurant;
 import Business.CityRestaurant.Menu;
 import java.awt.CardLayout;
 import java.text.DecimalFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -47,6 +49,26 @@ public class ManageMenuJPanel extends javax.swing.JPanel {
             model.addRow(row);
             }
         }
+    
+    private boolean isValidDishName(){
+        String regex = "^[a-zA-Z]+$";
+        Pattern p = Pattern.compile(regex);
+        if (txtDish.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtDish.getText());
+        return m.matches();
+    }
+    
+    private boolean isValidPrice(){
+        String regex = "^[0-9]+$";
+        Pattern p = Pattern.compile(regex);
+        if (txtPrice.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtPrice.getText());
+        return m.matches();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -200,7 +222,7 @@ public class ManageMenuJPanel extends javax.swing.JPanel {
         String stringPrice = txtPrice.getText();
         double price;
         
-        if (!dish.trim().equals("") & !stringPrice.trim().equals("")) {
+        if (isValidDishName() & isValidPrice()) {
             price = Double.parseDouble(stringPrice);
             menu = restaurant.getMenuList().addMenu();
             menu.setDish(dish);
@@ -216,7 +238,6 @@ public class ManageMenuJPanel extends javax.swing.JPanel {
         }
         else         
             JOptionPane.showMessageDialog(null,"Invalid input!", "Warning", JOptionPane.WARNING_MESSAGE);
-
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -238,6 +259,7 @@ public class ManageMenuJPanel extends javax.swing.JPanel {
         }
         Menu menu = (Menu)menuTable.getValueAt(row, 0);
         btnAdd.setEnabled(false);
+        btnUpdate.setEnabled(false);
         btnSave.setEnabled(true);
 
         txtDish.setText(menu.getDish());
@@ -270,6 +292,7 @@ public class ManageMenuJPanel extends javax.swing.JPanel {
             
             populateTable();
             btnAdd.setEnabled(true);
+            btnUpdate.setEnabled(true);
             btnSave.setEnabled(false);
         }
         else         

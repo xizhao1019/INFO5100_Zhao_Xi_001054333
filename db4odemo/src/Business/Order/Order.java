@@ -83,6 +83,11 @@ public abstract class Order {
     public static void setCount(int count) {
         Order.count = count;
     }
+    
+    @Override
+    public String toString(){
+        return String.valueOf(orderNumber);
+    }
 
     
     

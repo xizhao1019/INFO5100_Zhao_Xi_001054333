@@ -11,6 +11,8 @@ import Business.CityRestaurant.CityRestaurant;
 import Business.EcoSystem;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -39,11 +41,11 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
 
         model.setRowCount(0);
         for (Area area : system.getAreaList()) {
-            for (CityRestaurant city : area.getCityRestaurantList().getCityRestaurantList()) {
+            for (CityRestaurant restaurant : area.getCityRestaurantList().getCityRestaurantList()) {
                 Object[] row = new Object[3];
-                row[0] = area.getName();
-                row[1] = city.getCityName().getValue();
-                row[2] = city.getName();
+                row[0] = area;
+                row[1] = restaurant.getCityName().getValue();
+                row[2] = restaurant;
 
                 model.addRow(row);
             }
@@ -62,6 +64,13 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
             cityNameComboBox.addItem(cityname);
         }
 
+    }
+    
+    private boolean inputStringCorrect(String s){
+        Pattern p = Pattern.compile("^[a-zA-Z0-9]+$");
+        Matcher m = p.matcher(s);
+        boolean input = m.matches();
+        return input;
     }
 
     /** This method is called from within the constructor to
@@ -83,6 +92,7 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
         areaComboBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         txtRestaurantName = new javax.swing.JTextField();
+        btnDelete = new javax.swing.JButton();
 
         jLabel3.setText("City Name");
 
@@ -134,10 +144,26 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Restaurant Name");
 
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(backJButton)))
+                .addGap(22, 22, 22))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -149,18 +175,11 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
                     .addComponent(cityNameComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtRestaurantName, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(148, 148, 148))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(backJButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(239, 239, 239)
-                        .addComponent(submitJButton)))
-                .addGap(22, 22, 22))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(submitJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDelete)
+                .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,9 +200,11 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtRestaurantName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addComponent(submitJButton)
-                .addGap(30, 30, 30))
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(submitJButton)
+                    .addComponent(btnDelete))
+                .addGap(28, 28, 28))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -199,12 +220,13 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
 
         String restaurantName = txtRestaurantName.getText();
         
-        if (restaurantName.trim().equals("")) {
+        if (restaurantName.trim().equals("") || !inputStringCorrect(restaurantName)) {
             JOptionPane.showMessageDialog(null, "Invalid Input!", "Warning", JOptionPane.WARNING_MESSAGE);
         }
         else{
             CityRestaurant restaurant = area.getCityRestaurantList().createAndAddCityRestaurant(restaurantName, cityname);
             populateTable();
+            txtRestaurantName.setText("");
         }
 
     }//GEN-LAST:event_submitJButtonActionPerformed
@@ -220,10 +242,24 @@ public class AddNewRestaurantJPanel extends javax.swing.JPanel {
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_backJButtonActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int row = restaurantTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a restaurant!");
+            return;
+        }
+        Area area = (Area) restaurantTable.getValueAt(row, 0);
+        CityRestaurant restaurant = (CityRestaurant) restaurantTable.getValueAt(row, 2);
+        area.getCityRestaurantList().getCityRestaurantList().remove(restaurant);
+        populateTable();
+        JOptionPane.showMessageDialog(null, "Successfully deleted!");
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox areaComboBox;
     private javax.swing.JButton backJButton;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JComboBox cityNameComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

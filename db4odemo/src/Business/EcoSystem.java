@@ -47,7 +47,7 @@ public class EcoSystem extends Organization{
         roleList.add(new SystemAdminRole());
         return roleList;
     }
-    private EcoSystem(){
+    public EcoSystem(){
         super(null);
         areaList = new ArrayList<Area>();
     }

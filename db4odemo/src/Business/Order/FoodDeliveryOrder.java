@@ -5,17 +5,26 @@
  */
 package Business.Order;
 
-import Business.CityRestaurant.Menu;
+import Business.CityRestaurant.CityRestaurant;
 import java.util.ArrayList;
 
 /**
  *
  * @author zhaoxi
  */
-public class CustomerOrder extends Order {
+public class FoodDeliveryOrder extends Order {
+    private CityRestaurant restaurant;
     private String comment;
     private double price;
-    private ArrayList <Menu> itemList;
+    private ArrayList <OrderItem> itemList;
+
+    public CityRestaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(CityRestaurant restaurant) {
+        this.restaurant = restaurant;
+    }
     
     public String getComment() {
         return comment;
@@ -25,7 +34,7 @@ public class CustomerOrder extends Order {
         this.comment = comment;
     }
     
-    public ArrayList<Menu> getItemList() {
+    public ArrayList<OrderItem> getItemList() {
         return itemList;
     }
 
@@ -37,7 +46,7 @@ public class CustomerOrder extends Order {
         this.price = price;
     }
 
-    public void setItemList(ArrayList<Menu> itemList) {
+    public void setItemList(ArrayList<OrderItem> itemList) {
         this.itemList = itemList;
     }
 

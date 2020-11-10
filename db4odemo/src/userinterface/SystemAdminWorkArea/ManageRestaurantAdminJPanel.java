@@ -13,6 +13,9 @@ import Business.Role.RestaurantAdminRole;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
@@ -59,24 +62,66 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
     }
     
     private void populateTable() {
-        DefaultTableModel model = (DefaultTableModel) enterpriseJTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) restaurantAdminTable.getModel();
 
         model.setRowCount(0);
         for (Area area : system.getAreaList()) {
-            for (CityRestaurant city : area.getCityRestaurantList().getCityRestaurantList()) {
-                for (UserAccount userAccount : city.getUserAccountDirectory().getUserAccountList()) {
+            for (CityRestaurant restaurant : area.getCityRestaurantList().getCityRestaurantList()) {
+                for (UserAccount userAccount : restaurant.getUserAccountDirectory().getUserAccountList()) {
                     Object[] row = new Object[6];
-                    row[0] = area.getName();
-                    row[1] = city.getCityName().getValue();
-                    row[2] = city.getName();
+                    row[0] = area;
+                    row[1] = restaurant.getCityName().getValue();
+                    row[2] = restaurant;
                     row[3] = userAccount.getEmployee().getName();
-                    row[4] = userAccount.getUsername();
+                    row[4] = userAccount;
                     row[5] = userAccount.getPassword();
 
                     model.addRow(row);
                 }
             }
         }
+    }
+    
+    private boolean isValidAdminName(){
+        String regex = "^[a-zA-Z]+$";
+        Pattern p = Pattern.compile(regex);
+        if (txtAdminName.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtAdminName.getText());
+        return m.matches();
+    }
+    
+    private boolean isValidUserName() {
+        String regex = "^[aA-zZ0-9]+$";
+        Pattern p = Pattern.compile(regex);
+        if (txtUsername.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtUsername.getText());
+        return m.matches();
+    }
+    
+    private boolean isValidPassword() {
+        String regex = "^(?=.*[0-9])" + "(?=.*[aA-zZ])" + ".{5,}$";
+        Pattern p = Pattern.compile(regex);
+        if (txtPassword.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtPassword.getText());
+        return m.matches();
+    }
+    
+    private boolean isUniqueUsername() {
+        boolean unique = true;
+        CityRestaurant cityRestaurant = (CityRestaurant) restaurantNameComboBox.getSelectedItem();
+        for (UserAccount ua : cityRestaurant.getUserAccountDirectory().getUserAccountList()) {
+            if (txtUsername.getText().equals(ua.getUsername())) {
+                unique = false;
+                break;
+            }
+        }
+        return unique;
     }
 
     /**
@@ -89,7 +134,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        enterpriseJTable = new javax.swing.JTable();
+        restaurantAdminTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         txtUsername = new javax.swing.JTextField();
         submitJButton = new javax.swing.JButton();
@@ -104,8 +149,9 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         txtAdminName = new javax.swing.JTextField();
         txtPassword = new javax.swing.JTextField();
+        btnDelete = new javax.swing.JButton();
 
-        enterpriseJTable.setModel(new javax.swing.table.DefaultTableModel(
+        restaurantAdminTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -124,18 +170,18 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(enterpriseJTable);
-        if (enterpriseJTable.getColumnModel().getColumnCount() > 0) {
-            enterpriseJTable.getColumnModel().getColumn(0).setResizable(false);
-            enterpriseJTable.getColumnModel().getColumn(0).setPreferredWidth(100);
-            enterpriseJTable.getColumnModel().getColumn(1).setResizable(false);
-            enterpriseJTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-            enterpriseJTable.getColumnModel().getColumn(2).setResizable(false);
-            enterpriseJTable.getColumnModel().getColumn(2).setPreferredWidth(70);
-            enterpriseJTable.getColumnModel().getColumn(3).setResizable(false);
-            enterpriseJTable.getColumnModel().getColumn(3).setPreferredWidth(70);
-            enterpriseJTable.getColumnModel().getColumn(4).setResizable(false);
-            enterpriseJTable.getColumnModel().getColumn(5).setResizable(false);
+        jScrollPane1.setViewportView(restaurantAdminTable);
+        if (restaurantAdminTable.getColumnModel().getColumnCount() > 0) {
+            restaurantAdminTable.getColumnModel().getColumn(0).setResizable(false);
+            restaurantAdminTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+            restaurantAdminTable.getColumnModel().getColumn(1).setResizable(false);
+            restaurantAdminTable.getColumnModel().getColumn(1).setPreferredWidth(30);
+            restaurantAdminTable.getColumnModel().getColumn(2).setResizable(false);
+            restaurantAdminTable.getColumnModel().getColumn(2).setPreferredWidth(70);
+            restaurantAdminTable.getColumnModel().getColumn(3).setResizable(false);
+            restaurantAdminTable.getColumnModel().getColumn(3).setPreferredWidth(70);
+            restaurantAdminTable.getColumnModel().getColumn(4).setResizable(false);
+            restaurantAdminTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
         jLabel2.setText("Username");
@@ -175,6 +221,13 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
 
         jLabel6.setText("Admin Name");
 
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -202,11 +255,14 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
                         .addGap(15, 15, 15)
                         .addComponent(backJButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(249, 249, 249)
-                        .addComponent(submitJButton))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(259, 259, 259)
+                        .addComponent(submitJButton)
+                        .addGap(3, 3, 3)
+                        .addComponent(btnDelete)
+                        .addGap(14, 14, 14)))
                 .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
@@ -240,9 +296,11 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addComponent(submitJButton)
-                .addGap(36, 36, 36))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(submitJButton)
+                    .addComponent(btnDelete))
+                .addGap(35, 35, 35))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -251,13 +309,28 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
         
         String username = txtUsername.getText();
         String password = txtPassword.getText();
-//        String restaurantName = String.valueOf(restaurantNameComboBox.getSelectedItem());
         String adminName = txtAdminName.getText();
         Employee employee = cityRestaurant.getEmployeeDirectory().createEmployee(adminName);
+        if (!isValidAdminName()) {
+            JOptionPane.showMessageDialog(null, "Invalid admin name!");
+        }
+        else if (!isValidUserName()) {
+            JOptionPane.showMessageDialog(null, "Invalid username!");
+        }
+        else if (!isUniqueUsername()) {
+            JOptionPane.showMessageDialog(null, "Username should be unique!");
+        }
+        else if (!isValidPassword()) {
+            JOptionPane.showMessageDialog(null, "Password should be at least 5 digits, with at least one letter and one digit.");
+        }
+        else {
+            UserAccount account = cityRestaurant.getUserAccountDirectory().createUserAccount(username, password, employee, new RestaurantAdminRole());
+            populateTable();
 
-        UserAccount account = cityRestaurant.getUserAccountDirectory().createUserAccount(username, password, employee, new RestaurantAdminRole());
-        populateTable();
-
+            txtUsername.setText("");
+            txtPassword.setText("");
+            txtAdminName.setText("");
+        }
     }//GEN-LAST:event_submitJButtonActionPerformed
 
     private void backJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backJButtonActionPerformed
@@ -278,12 +351,27 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_cityNameComboBoxActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int row = restaurantAdminTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(null, "Please select an account!");
+            return;
+        }
+        CityRestaurant r  = (CityRestaurant) restaurantAdminTable.getValueAt(row, 2);
+        UserAccount ua = (UserAccount) restaurantAdminTable.getValueAt(row, 4);
+        boolean remove = r.getUserAccountDirectory().getUserAccountList().remove(ua);
+        if (remove) {
+            populateTable();
+            JOptionPane.showMessageDialog(null, "Successfully deleted!");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox areaComboBox;
     private javax.swing.JButton backJButton;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JComboBox cityNameComboBox;
-    private javax.swing.JTable enterpriseJTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -291,6 +379,7 @@ public class ManageRestaurantAdminJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable restaurantAdminTable;
     private javax.swing.JComboBox restaurantNameComboBox;
     private javax.swing.JButton submitJButton;
     private javax.swing.JTextField txtAdminName;

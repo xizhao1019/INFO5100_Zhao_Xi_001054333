@@ -5,10 +5,18 @@
  */
 package userinterface.RestaurantAdminRole;
 
-import Business.CityRestaurant.CityRestaurant;
+import Business.Area.Area;
+import Business.EcoSystem;
+import Business.Order.FoodDeliveryOrder;
+import Business.Order.OrderItem;
+import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,14 +24,62 @@ import javax.swing.JPanel;
  */
 public class UpdateOrderJPanel extends javax.swing.JPanel {
     private JPanel userProcessContainer;
-    private CityRestaurant restaurant;
+    private FoodDeliveryOrder restaurantOrder;
+    private EcoSystem system;
     /**
      * Creates new form UpdateOrderJPanel
      */
-    public UpdateOrderJPanel() {
+    public UpdateOrderJPanel(JPanel userProcessContainer,FoodDeliveryOrder restaurantOrder, EcoSystem system) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.restaurantOrder = restaurantOrder;
+        this.system = system;
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        lblOrderNo.setText(String.valueOf(restaurantOrder.getOrderNumber()));
+        lblOrderDate.setText(String.valueOf(sdf.format(restaurantOrder.getOrderDate())));
+        txtRestaurant.setText(restaurantOrder.getRestaurant().getName());
+        txtUserName.setText(restaurantOrder.getCustomer().getUsername());
+        txtPrice.setText(String.valueOf(restaurantOrder.getPrice()));
+        
+        pupulateTable();
+        populateDeliveryManComboBox();
+        
+        statusComboBox.setSelectedItem(restaurantOrder.getStatus());
+        txtDeliveredDate.setText(restaurantOrder.getDeliveredDate()==null ? "Waiting" :sdf.format(restaurantOrder.getDeliveredDate()));
+        txtComment.setText(restaurantOrder.getComment());
+        
+        deliveredOrNot();
     }
+    
+    private void populateDeliveryManComboBox(){
+        dmComboBox.removeAllItems();
+        for(Area area : system.getAreaList())
+            for (UserAccount dmua : area.getDeliveryManDirectory().getUserAccountDirectory().getUserAccountList()) {
+                dmComboBox.addItem(dmua);
+            }
+    }
+    
+    private void pupulateTable(){
+        DefaultTableModel model = (DefaultTableModel) orderTable.getModel();
+        DecimalFormat df = new DecimalFormat("#.00"); 
+        model.setRowCount(0);
+            for (OrderItem item : restaurantOrder.getItemList()) {
+            Object[] row = new Object[3];
+            row[0] = item;
+            row[1] = df.format(item.getMenu().getPrice());
+            row[2] = item.getQuantity();
+            
+            model.addRow(row);
+            }
+     }
 
+    private void deliveredOrNot(){
+        if (restaurantOrder.getStatus().equals("Delivered")) {
+            btnUpdate.setEnabled(false);
+        }
+        else btnUpdate.setEnabled(true);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,16 +90,9 @@ public class UpdateOrderJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         backJButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtOrderNo = new javax.swing.JTextField();
-        txtUserName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        deliveryManComboBox = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         statusComboBox = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        itemsTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         txtPrice = new javax.swing.JTextField();
         btnUpdate = new javax.swing.JButton();
@@ -51,6 +100,19 @@ public class UpdateOrderJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtComment = new javax.swing.JTextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        orderTable = new javax.swing.JTable();
+        dmComboBox = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        txtRestaurant = new javax.swing.JTextField();
+        txtUserName = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblOrderDate = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblOrderNo = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtDeliveredDate = new javax.swing.JTextField();
 
         backJButton.setText("<< Back");
         backJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -59,58 +121,33 @@ public class UpdateOrderJPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("Order No.");
-
-        jLabel2.setText("UserName");
-
-        txtOrderNo.setEnabled(false);
-
-        txtUserName.setEnabled(false);
-
         jLabel4.setText("Delivery Man");
-
-        deliveryManComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        deliveryManComboBox.setEnabled(false);
 
         jLabel5.setText("Status");
 
-        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Delivering", "Delivered" }));
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Delivering", "Delivered", "Cancelled" }));
         statusComboBox.setEnabled(false);
-
-        itemsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Item", "Price"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        itemsTable.setEnabled(false);
-        jScrollPane1.setViewportView(itemsTable);
-        if (itemsTable.getColumnModel().getColumnCount() > 0) {
-            itemsTable.getColumnModel().getColumn(0).setResizable(false);
-            itemsTable.getColumnModel().getColumn(1).setResizable(false);
-        }
 
         jLabel3.setText("Total Price");
 
         txtPrice.setEnabled(false);
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Save");
+        btnSave.setEnabled(false);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
+        jLabel6.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel6.setText("Comment");
 
         txtComment.setColumns(20);
@@ -118,83 +155,154 @@ public class UpdateOrderJPanel extends javax.swing.JPanel {
         txtComment.setEnabled(false);
         jScrollPane2.setViewportView(txtComment);
 
+        orderTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Item", "Unit Price", "Quantity"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(orderTable);
+
+        dmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        dmComboBox.setEnabled(false);
+
+        jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel8.setText("Order Date:");
+
+        txtRestaurant.setEnabled(false);
+
+        txtUserName.setEnabled(false);
+
+        jLabel7.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel7.setText("Restaurant");
+
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel1.setText("Order No.");
+
+        lblOrderDate.setText("<value>");
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel2.setText("UserName");
+
+        lblOrderNo.setText("<value>");
+
+        jLabel9.setText("Delivered Date");
+
+        txtDeliveredDate.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtOrderNo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(259, 259, 259)
-                                .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(backJButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(83, 83, 83)
-                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(statusComboBox, 0, 139, Short.MAX_VALUE)
-                                    .addComponent(deliveryManComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtPrice)))
-                            .addComponent(jLabel6)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(110, 110, 110))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(282, 282, 282)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(71, 71, 71)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(56, 56, 56)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(jLabel9))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(statusComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(txtPrice)
+                                                .addComponent(dmComboBox, 0, 139, Short.MAX_VALUE)
+                                                .addComponent(txtDeliveredDate)))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel7))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblOrderNo)
+                                        .addComponent(txtRestaurant, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(17, 17, 17)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblOrderDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(15, 15, 15)
+                            .addComponent(backJButton))))
+                .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(backJButton)
-                .addGap(30, 30, 30)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(txtOrderNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel8)
+                    .addComponent(lblOrderNo)
+                    .addComponent(lblOrderDate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtRestaurant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(8, 8, 8)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(deliveryManComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(dmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtDeliveredDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate)
                     .addComponent(btnSave))
-                .addGap(22, 22, 22))
+                .addGap(17, 17, 17))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -203,30 +311,100 @@ public class UpdateOrderJPanel extends javax.swing.JPanel {
         Component[] componentArray = userProcessContainer.getComponents();
         Component component = componentArray[componentArray.length - 1];
         ManageOrderJPanel mojp = (ManageOrderJPanel) component;
-//        mojp.populateTable();
+        mojp.populateTable();
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_backJButtonActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        dmComboBox.setEnabled(true);
+        statusComboBox.setEnabled(true);
+        
+        btnSave.setEnabled(true);
+        btnUpdate.setEnabled(false);
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        
+        String status = (String) statusComboBox.getSelectedItem();
+
+        FoodDeliveryOrder customerOrder = null;
+        for(FoodDeliveryOrder co : restaurantOrder.getCustomer().getOrderList().getOrderList()){
+            if (co.getOrderNumber() == restaurantOrder.getOrderNumber() & co.getCustomer().equals(restaurantOrder.getCustomer())) {
+                customerOrder = co;
+                break;
+            }
+        }
+        
+        if (status.equals("Cancelled")) {
+            restaurantOrder.setDeliveryMan(null);
+            restaurantOrder.setStatus(status);
+            
+            customerOrder.setDeliveryMan(null);
+            customerOrder.setStatus(restaurantOrder.getStatus());
+            
+            btnUpdate.setEnabled(true);
+            
+            JOptionPane.showMessageDialog(null, "Order cancelled successfully!");
+        }
+        else if (status.equals("Pending") || status.equals("Delivered")) {
+            JOptionPane.showMessageDialog(null, "DeliveryMan has been just assigned, please change status as Delivering!");
+        }
+        else if (status.equals("Delivering")) {
+            UserAccount dm = (UserAccount)dmComboBox.getSelectedItem();
+            
+            restaurantOrder.setDeliveryMan(dm);
+            restaurantOrder.setStatus(status);
+            
+            customerOrder.setDeliveryMan(dm);
+            customerOrder.setStatus(status);
+            
+            FoodDeliveryOrder dmOrder = dm.getOrderList().createOrder();
+            dmOrder.setOrderNumber(restaurantOrder.getOrderNumber());
+            dmOrder.setOrderDate(restaurantOrder.getOrderDate());
+            dmOrder.setRestaurant(restaurantOrder.getRestaurant());
+            dmOrder.setCustomer(restaurantOrder.getCustomer());
+            dmOrder.setItemList(restaurantOrder.getItemList());
+            dmOrder.setPrice(restaurantOrder.getPrice());
+            dmOrder.setStatus(restaurantOrder.getStatus());
+            dmOrder.setDeliveredDate(restaurantOrder.getDeliveredDate());
+            
+            btnUpdate.setEnabled(true);
+            btnSave.setEnabled(false);
+            
+            dmComboBox.setEnabled(false);
+            statusComboBox.setEnabled(false);
+            
+            JOptionPane.showMessageDialog(null, "Order updated successfully!");
+        }
+        
+    }//GEN-LAST:event_btnSaveActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backJButton;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<String> deliveryManComboBox;
-    private javax.swing.JTable itemsTable;
+    private javax.swing.JComboBox dmComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblOrderDate;
+    private javax.swing.JLabel lblOrderNo;
+    private javax.swing.JTable orderTable;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JTextArea txtComment;
-    private javax.swing.JTextField txtOrderNo;
+    private javax.swing.JTextField txtDeliveredDate;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtRestaurant;
     private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }

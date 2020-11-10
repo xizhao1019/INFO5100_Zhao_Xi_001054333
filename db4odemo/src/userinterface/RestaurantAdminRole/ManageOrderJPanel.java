@@ -6,8 +6,14 @@
 package userinterface.RestaurantAdminRole;
 
 import Business.CityRestaurant.CityRestaurant;
+import Business.EcoSystem;
+import Business.Order.FoodDeliveryOrder;
 import java.awt.CardLayout;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,13 +22,37 @@ import javax.swing.JPanel;
 public class ManageOrderJPanel extends javax.swing.JPanel {
     private JPanel userProcessContainer;
     private CityRestaurant restaurant;
+    private EcoSystem system;
     /**
      * Creates new form ManageOrderJPanel
      */
-    public ManageOrderJPanel() {
+    public ManageOrderJPanel(JPanel userProcessContainer,CityRestaurant restaurant, EcoSystem system) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.restaurant = restaurant;
+        this.system = system;
+        populateTable();
     }
 
+    public void populateTable(){
+        DefaultTableModel model = (DefaultTableModel) orderTable.getModel();
+        DecimalFormat df = new DecimalFormat("#.00"); 
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        model.setRowCount(0);
+        for (FoodDeliveryOrder order : restaurant.getOrderList().getOrderList()) {
+            Object[] row = new Object[8];
+            row[0] = order;
+            row[1] = order.getCustomer();
+            row[2] = order.getItemList().size();
+            row[3] = df.format(order.getPrice());
+            row[4] = order.getStatus();
+            row[5] = order.getDeliveryMan()==null ? "--":order.getDeliveryMan();
+            row[6] = sdf.format(order.getOrderDate());
+            row[7] = order.getDeliveredDate() == null ? "--" : sdf.format(order.getDeliveredDate());
+            
+            model.addRow(row);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,21 +89,21 @@ public class ManageOrderJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(orderTable);
         if (orderTable.getColumnModel().getColumnCount() > 0) {
             orderTable.getColumnModel().getColumn(0).setResizable(false);
-            orderTable.getColumnModel().getColumn(0).setPreferredWidth(60);
+            orderTable.getColumnModel().getColumn(0).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(1).setResizable(false);
-            orderTable.getColumnModel().getColumn(1).setPreferredWidth(60);
+            orderTable.getColumnModel().getColumn(1).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(2).setResizable(false);
             orderTable.getColumnModel().getColumn(2).setPreferredWidth(40);
             orderTable.getColumnModel().getColumn(3).setResizable(false);
-            orderTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+            orderTable.getColumnModel().getColumn(3).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(4).setResizable(false);
-            orderTable.getColumnModel().getColumn(4).setPreferredWidth(70);
+            orderTable.getColumnModel().getColumn(4).setPreferredWidth(60);
             orderTable.getColumnModel().getColumn(5).setResizable(false);
-            orderTable.getColumnModel().getColumn(5).setPreferredWidth(70);
+            orderTable.getColumnModel().getColumn(5).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(6).setResizable(false);
-            orderTable.getColumnModel().getColumn(6).setPreferredWidth(100);
+            orderTable.getColumnModel().getColumn(6).setPreferredWidth(120);
             orderTable.getColumnModel().getColumn(7).setResizable(false);
-            orderTable.getColumnModel().getColumn(7).setPreferredWidth(100);
+            orderTable.getColumnModel().getColumn(7).setPreferredWidth(120);
         }
 
         btnBack.setText("<<Back");
@@ -84,35 +114,38 @@ public class ManageOrderJPanel extends javax.swing.JPanel {
         });
 
         btnDetail.setText("ViewDetail/Update");
+        btnDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetailActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(btnBack))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBack)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 865, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(249, 249, 249)
+                        .addGap(367, 367, 367)
                         .addComponent(btnDetail)))
-                .addGap(276, 276, 276))
+                .addGap(14, 14, 14))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(btnBack)
-                .addGap(31, 31, 31)
+                .addGap(44, 44, 44)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnDetail)
-                .addGap(47, 47, 47))
+                .addGap(34, 34, 34))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -121,6 +154,20 @@ public class ManageOrderJPanel extends javax.swing.JPanel {
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
+        int row = orderTable.getSelectedRow();
+        if(row<0){
+            JOptionPane.showMessageDialog(null, "Please select an order!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        FoodDeliveryOrder order = (FoodDeliveryOrder) orderTable.getValueAt(row, 0);
+        UpdateOrderJPanel uojp = new UpdateOrderJPanel(userProcessContainer,order,system);
+        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
+        userProcessContainer.add("UpdateOrderJPanel",uojp);
+        layout.next(userProcessContainer);
+        
+    }//GEN-LAST:event_btnDetailActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

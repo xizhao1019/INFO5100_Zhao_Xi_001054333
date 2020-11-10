@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public abstract class Organization {
 
-    private String name;
+    public String name;
     private OrderList workQueue;
     private EmployeeDirectory employeeDirectory;
     private UserAccountDirectory userAccountDirectory;
@@ -67,7 +67,7 @@ public abstract class Organization {
         return name;
     }
 
-    public OrderList getWorkQueue() {
+    public OrderList getOrderList() {
         return workQueue;
     }
 
@@ -75,7 +75,7 @@ public abstract class Organization {
         this.name = name;
     }
 
-    public void setWorkQueue(OrderList workQueue) {
+    public void setOrderList(OrderList workQueue) {
         this.workQueue = workQueue;
     }
 

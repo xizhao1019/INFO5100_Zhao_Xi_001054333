@@ -5,9 +5,14 @@
  */
 package userinterface.CustomerRole;
 
-import Business.CityRestaurant.CityRestaurant;
+import Business.Order.FoodDeliveryOrder;
+import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,12 +20,16 @@ import javax.swing.JPanel;
  */
 public class ViewOrderJPanel extends javax.swing.JPanel {
     private JPanel userProcessContainer;
-    private CityRestaurant restaurant;
+    private UserAccount account;
+    
     /**
      * Creates new form ViewOrderJPanel
      */
-    public ViewOrderJPanel() {
+    public ViewOrderJPanel(JPanel userProcessContainer,UserAccount account) {
         initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.account = account;
+        populateTable();
     }
 
     /**
@@ -52,7 +61,7 @@ public class ViewOrderJPanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Order No.", "UserName", "Items", "Total Price", "Status", "DeliveryMan", "Order Date", "Delivered Date"
+                "Order No.", "Restaurant", "Items", "Total Price", "Status", "DeliveryMan", "Order Date", "Delivered Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -66,24 +75,29 @@ public class ViewOrderJPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(orderTable);
         if (orderTable.getColumnModel().getColumnCount() > 0) {
             orderTable.getColumnModel().getColumn(0).setResizable(false);
-            orderTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+            orderTable.getColumnModel().getColumn(0).setPreferredWidth(40);
             orderTable.getColumnModel().getColumn(1).setResizable(false);
             orderTable.getColumnModel().getColumn(1).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(2).setResizable(false);
-            orderTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+            orderTable.getColumnModel().getColumn(2).setPreferredWidth(20);
             orderTable.getColumnModel().getColumn(3).setResizable(false);
             orderTable.getColumnModel().getColumn(3).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(4).setResizable(false);
             orderTable.getColumnModel().getColumn(4).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(5).setResizable(false);
-            orderTable.getColumnModel().getColumn(5).setPreferredWidth(70);
+            orderTable.getColumnModel().getColumn(5).setPreferredWidth(50);
             orderTable.getColumnModel().getColumn(6).setResizable(false);
-            orderTable.getColumnModel().getColumn(6).setPreferredWidth(100);
+            orderTable.getColumnModel().getColumn(6).setPreferredWidth(120);
             orderTable.getColumnModel().getColumn(7).setResizable(false);
-            orderTable.getColumnModel().getColumn(7).setPreferredWidth(100);
+            orderTable.getColumnModel().getColumn(7).setPreferredWidth(120);
         }
 
         btnDetail.setText("ViewDetail");
+        btnDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetailActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -92,34 +106,68 @@ public class ViewOrderJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(btnBack))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 869, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(382, 382, 382)
+                        .addComponent(btnDetail))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(294, 294, 294)
-                        .addComponent(btnDetail)))
+                        .addContainerGap()
+                        .addComponent(btnBack)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(14, 14, 14)
                 .addComponent(btnBack)
-                .addGap(31, 31, 31)
+                .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(btnDetail)
-                .addGap(47, 47, 47))
+                .addGap(73, 73, 73))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void populateTable(){
+        DefaultTableModel model = (DefaultTableModel) orderTable.getModel();
+        DecimalFormat df = new DecimalFormat("#.00"); 
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        model.setRowCount(0);
+        for (FoodDeliveryOrder order : account.getOrderList().getOrderList()) {
+            Object[] row = new Object[8];
+            row[0] = order;
+            row[1] = order.getRestaurant();
+            row[2] = order.getItemList().size();
+            row[3] = df.format(order.getPrice());
+            row[4] = order.getStatus();
+            row[5] = order.getDeliveryMan()==null ? "--":order.getDeliveryMan();
+            row[6] = sdf.format(order.getOrderDate());
+            row[7] = order.getDeliveredDate() == null ? "--" : sdf.format(order.getDeliveredDate());
+            
+            model.addRow(row);
+        }
+        
+    }
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         userProcessContainer.remove(this);
         CardLayout layout = (CardLayout) userProcessContainer.getLayout();
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
+        int row = orderTable.getSelectedRow();
+        if(row<0){
+            JOptionPane.showMessageDialog(null, "Please select an order!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        FoodDeliveryOrder order = (FoodDeliveryOrder)orderTable.getValueAt(row, 0);
+        CardLayout layout = (CardLayout)userProcessContainer.getLayout();
+        OrderDetailJPanel odjp = new OrderDetailJPanel(userProcessContainer,order);
+        userProcessContainer.add("OrderDetailJPanel", odjp);
+        layout.next(userProcessContainer);
+        
+    }//GEN-LAST:event_btnDetailActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

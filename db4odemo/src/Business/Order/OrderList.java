@@ -12,18 +12,18 @@ import java.util.ArrayList;
  */
 public class OrderList {
     
-    private ArrayList<CustomerOrder> orderList;
+    private ArrayList<FoodDeliveryOrder> orderList;
 
     public OrderList() {
         orderList = new ArrayList();
     }
 
-    public ArrayList<CustomerOrder> getOrderList() {
+    public ArrayList<FoodDeliveryOrder> getOrderList() {
         return orderList;
     }
     
-    public CustomerOrder createOrder(){
-        CustomerOrder order = new CustomerOrder();
+    public FoodDeliveryOrder createOrder(){
+        FoodDeliveryOrder order = new FoodDeliveryOrder();
         orderList.add(order);
         return order;
     }

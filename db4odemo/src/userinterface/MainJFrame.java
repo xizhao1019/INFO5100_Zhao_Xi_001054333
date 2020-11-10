@@ -155,7 +155,7 @@ public class MainJFrame extends javax.swing.JFrame {
         String password = String.valueOf(txtPassword.getPassword());
         UserAccount ua = system.getUserAccountDirectory().authenticateUser(username,password);
         
-        CityRestaurant inCity=null;
+        CityRestaurant inRestaurant=null;
         Customer inCustomer = null;
         DeliveryMan inDelivery = null;
         
@@ -169,7 +169,7 @@ public class MainJFrame extends javax.swing.JFrame {
                        for(Organization organization:enterprise.getOrganizationDirectory().getOrganizationList()){
                            ua=organization.getUserAccountDirectory().authenticateUser(username, password);
                            if(ua!=null){
-                               inCity=enterprise;
+                               inRestaurant=enterprise;
                                inOrganization=organization;
                                break;
                            }
@@ -177,14 +177,14 @@ public class MainJFrame extends javax.swing.JFrame {
                         
                     }
                     else{
-                       inCity=enterprise;
+                       inRestaurant=enterprise;
                        break;
                     }
                     if(inOrganization!=null){
                         break;
                     }  
                 }
-                if(inCity!=null){
+                if(inRestaurant!=null){
                     break;
                 }
             }
@@ -192,10 +192,10 @@ public class MainJFrame extends javax.swing.JFrame {
         
         if (ua==null) {
             for(Area area:system.getAreaList()){
-                for(Customer customer:area.getCustomerDir().getCustomerList()){
-                    ua=customer.getUserAccountDirectory().authenticateUser(username, password);
+                for(UserAccount customer:area.getCustomerDir().getUserAccountDirectory().getUserAccountList()){
+                    ua=area.getCustomerDir().getUserAccountDirectory().authenticateUser(username, password);
                            if(ua!=null){
-                               inCustomer=customer;
+                               inCustomer=area.getCustomerDir();
                                break;
                            }
                         }    
@@ -204,10 +204,10 @@ public class MainJFrame extends javax.swing.JFrame {
             
         if (ua==null) {
             for (Area area:system.getAreaList()) {
-                for(DeliveryMan d : area.getDeliveryManDirectory().getDeliveryManList()){
-                    ua=d.getUserAccountDirectory().authenticateUser(username, password);
+                for(UserAccount d : area.getDeliveryManDirectory().getUserAccountDirectory().getUserAccountList()){
+                    ua=area.getDeliveryManDirectory().getUserAccountDirectory().authenticateUser(username, password);
                     if (ua!=null) {
-                        inDelivery = d;
+                        inDelivery = area.getDeliveryManDirectory();
                         break;
                     }
                 }
@@ -217,7 +217,7 @@ public class MainJFrame extends javax.swing.JFrame {
         
         if (ua != null) {
             CardLayout layout=(CardLayout)container.getLayout();
-            container.add("workArea",ua.getRole().createWorkArea(container, ua,inOrganization, inCity,system));
+            container.add("workArea",ua.getRole().createWorkArea(container, ua,inOrganization, inRestaurant,system));
             layout.next(container);
             btnLogin.setEnabled(false);
             logoutJButton.setEnabled(true);

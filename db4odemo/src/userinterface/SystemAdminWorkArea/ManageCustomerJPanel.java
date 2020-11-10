@@ -14,6 +14,8 @@ import Business.Role.CustomerRole;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -53,21 +55,63 @@ public class ManageCustomerJPanel extends javax.swing.JPanel {
     private void populateTable(){
         DefaultTableModel model = (DefaultTableModel) customerTable.getModel();
         Area area = (Area) areaComboBox.getSelectedItem();
-        customer = area.getCustomerDir().createCustomer();
+        customer = area.getCustomerDir();
         model.setRowCount(0);
-            for(Customer c: area.getCustomerDir().getCustomerList()){
-                for (UserAccount userAccount : c.getUserAccountDirectory().getUserAccountList()) {
-                    Object[] row = new Object[5];
-                    row[0] = area.getName();
-                    row[1] = cityNameComboBox.getSelectedItem();
-                    row[2] = userAccount.getEmployee().getName();
-                    row[3] = userAccount.getUsername();
-                    row[4] = userAccount.getPassword();
+            for (UserAccount userAccount : customer.getUserAccountDirectory().getUserAccountList()) {
+                Object[] row = new Object[5];
+                row[0] = area;
+                row[1] = cityNameComboBox.getSelectedItem();
+                row[2] = userAccount.getEmployee().getName();
+                row[3] = userAccount;
+                row[4] = userAccount.getPassword();
 
-                    model.addRow(row);
-                }
+                model.addRow(row);
             }
     }
+    
+    private boolean isValidCustomerName(){
+        String regex = "^[a-zA-Z]+$";
+        Pattern p = Pattern.compile(regex);
+        if (txtCustomerName.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtCustomerName.getText());
+        return m.matches();
+    }
+    
+    private boolean isValidUserName() {
+        String regex = "^[aA-zZ0-9]+$";
+        Pattern p = Pattern.compile(regex);
+        if (txtUsername.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtUsername.getText());
+        return m.matches();
+    }
+    
+    private boolean isValidPassword() {
+        String regex = "^(?=.*[0-9])" + "(?=.*[aA-zZ])" + ".{5,}$";
+        Pattern p = Pattern.compile(regex);
+        if (txtPassword.getText() == null) {
+            return false;
+        }
+        Matcher m = p.matcher(txtPassword.getText());
+        return m.matches();
+    }
+    
+    private boolean isUniqueUsername() {
+        boolean unique = true;
+        Area area = (Area) areaComboBox.getSelectedItem();
+        for (UserAccount ua : area.getCustomerDir().getUserAccountDirectory().getUserAccountList()) {
+            if (txtUsername.getText().equals(ua.getUsername())) {
+                unique = false;
+                break;
+            }
+        }
+        return unique;
+    }
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,6 +135,7 @@ public class ManageCustomerJPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         cityNameComboBox = new javax.swing.JComboBox();
         areaComboBox = new javax.swing.JComboBox();
+        btnDelete = new javax.swing.JButton();
 
         backJButton.setText("<< Back");
         backJButton.addActionListener(new java.awt.event.ActionListener() {
@@ -155,6 +200,13 @@ public class ManageCustomerJPanel extends javax.swing.JPanel {
 
         areaComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -178,16 +230,20 @@ public class ManageCustomerJPanel extends javax.swing.JPanel {
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(submitJButton)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtUsername)
-                                        .addComponent(txtCustomerName)
-                                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtUsername)
+                                    .addComponent(txtCustomerName)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(74, 74, 74))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(49, 49, 49))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(submitJButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDelete)
+                .addGap(59, 59, 59))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -219,9 +275,11 @@ public class ManageCustomerJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addComponent(submitJButton)
-                .addGap(19, 19, 19))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(submitJButton)
+                    .addComponent(btnDelete))
+                .addGap(23, 23, 23))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(11, 11, 11)
@@ -246,19 +304,52 @@ public class ManageCustomerJPanel extends javax.swing.JPanel {
         String customerName = txtCustomerName.getText();
         
         if (username.trim().equals("") || password.trim().equals("") || customerName.trim().equals("")) {
-           JOptionPane.showMessageDialog(null, "Invalid Input!", "Warning", JOptionPane.WARNING_MESSAGE);
+           JOptionPane.showMessageDialog(null, "Invalid Input!");
+        }
+        else if (!isValidCustomerName()) {
+            JOptionPane.showMessageDialog(null, "Invalid customer name!");
+        }
+        else if (!isValidUserName()) {
+            JOptionPane.showMessageDialog(null, "Invalid username!");
+        }
+        else if (!isUniqueUsername()) {
+            JOptionPane.showMessageDialog(null, "Username should be unique!");
+        }
+        else if (!isValidPassword()) {
+            JOptionPane.showMessageDialog(null, "Password should be at least 5 digits, with at least one letter and one digit.");
         }
         else{
+            Area area = (Area) areaComboBox.getSelectedItem();
+            customer = area.getCustomerDir();
             Employee employee = customer.getEmployeeDirectory().createEmployee(customerName);
             UserAccount customeraccount = customer.getUserAccountDirectory().createUserAccount(username,password,employee,new CustomerRole());
             populateTable();
+            txtUsername.setText("");
+            txtPassword.setText("");
+            txtCustomerName.setText("");
         }
     }//GEN-LAST:event_submitJButtonActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int row = customerTable.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(null, "Please select an account!");
+            return;
+        }
+        Area area = (Area) customerTable.getValueAt(row, 0);
+        UserAccount ua = (UserAccount) customerTable.getValueAt(row, 3);
+        boolean remove = area.getCustomerDir().getUserAccountDirectory().getUserAccountList().remove(ua);
+        if (remove) {
+            populateTable();
+            JOptionPane.showMessageDialog(null, "Successfully deleted!");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox areaComboBox;
     private javax.swing.JButton backJButton;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JComboBox cityNameComboBox;
     private javax.swing.JTable customerTable;
     private javax.swing.JLabel jLabel2;

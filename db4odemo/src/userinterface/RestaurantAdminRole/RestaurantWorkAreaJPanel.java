@@ -4,9 +4,7 @@ package userinterface.RestaurantAdminRole;
 
 
 import Business.CityRestaurant.CityRestaurant;
-import Business.CityRestaurant.CityRestaurantList;
 import Business.EcoSystem;
-import Business.Restaurant.RestaurantAdmin;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
@@ -85,7 +83,10 @@ public class RestaurantWorkAreaJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnManagerMenuActionPerformed
 
     private void btnManageOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageOrderActionPerformed
-
+        ManageOrderJPanel manageOrderJPanel = new ManageOrderJPanel(userProcessContainer,restaurant, business);
+        userProcessContainer.add("ManageOrderJPanel",manageOrderJPanel);
+        CardLayout layout=(CardLayout)userProcessContainer.getLayout();
+        layout.next(userProcessContainer);
     }//GEN-LAST:event_btnManageOrderActionPerformed
     
     

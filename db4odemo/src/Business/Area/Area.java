@@ -6,8 +6,8 @@
 package Business.Area;
 
 import Business.CityRestaurant.CityRestaurantList;
-import Business.Customer.CustomerDirectory;
-import Business.DeliveryMan.DeliveryManDirectory;
+import Business.Customer.Customer;
+import Business.DeliveryMan.DeliveryMan;
 
 /**
  *
@@ -16,13 +16,13 @@ import Business.DeliveryMan.DeliveryManDirectory;
 public class Area {
     private String name;
     private CityRestaurantList cityRestaurantList;
-    private CustomerDirectory customerDir;
-    private DeliveryManDirectory deliveryManDir;
+    private Customer customerDir;
+    private DeliveryMan deliveryManDir;
     
     public Area(){
         cityRestaurantList=new CityRestaurantList();
-        customerDir = new CustomerDirectory();
-        deliveryManDir = new DeliveryManDirectory();
+        customerDir = new Customer();
+        deliveryManDir = new DeliveryMan();
     }
     public String getName() {
         return name;
@@ -36,19 +36,19 @@ public class Area {
         return cityRestaurantList;
     }
 
-    public CustomerDirectory getCustomerDir() {
+    public Customer getCustomerDir() {
         return customerDir;
     }
 
-    public void setCustomerDir(CustomerDirectory customerDir) {
+    public void setCustomerDir(Customer customerDir) {
         this.customerDir = customerDir;
     }
 
-    public DeliveryManDirectory getDeliveryManDirectory() {
+    public DeliveryMan getDeliveryManDirectory() {
         return deliveryManDir;
     }
 
-    public void setDeliveryManDirectory(DeliveryManDirectory deliveryManDir) {
+    public void setDeliveryMan(DeliveryMan deliveryManDir) {
         this.deliveryManDir = deliveryManDir;
     }
     

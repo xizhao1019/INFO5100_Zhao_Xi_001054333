@@ -5,13 +5,11 @@
  */
 package userinterface.CustomerRole;
 
-import Business.Area.Area;
-import Business.CityRestaurant.BostonRestaurant;
 import Business.CityRestaurant.CityRestaurant;
 import Business.CityRestaurant.Menu;
 import Business.EcoSystem;
-import Business.Order.CustomerOrder;
-import Business.Order.OrderList;
+import Business.Order.FoodDeliveryOrder;
+import Business.Order.OrderItem;
 import Business.UserAccount.UserAccount;
 import java.awt.CardLayout;
 import java.text.DecimalFormat;
@@ -28,49 +26,25 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
     private JPanel userProcessContainer;
     private UserAccount account;
     private EcoSystem system;
-    private OrderList orderlist;
-    private CustomerOrder order;
-    private ArrayList<Menu> menulist;
+    private CityRestaurant restaurant;
+    private ArrayList<OrderItem> itemlist = new ArrayList<OrderItem>();
     /**
      * Creates new form PlaceOrderJPanel
      */
-    public PlaceOrderJPanel(JPanel userProcessContainer,UserAccount account,EcoSystem system) {
+    public PlaceOrderJPanel(JPanel userProcessContainer,UserAccount account,CityRestaurant restaurant) {
         initComponents();
         this.userProcessContainer = userProcessContainer;
         this.account = account;
-        this.system = system;
-        populateAreaCityComboBox();
-        
-    }
-    
-    private void populateAreaCityComboBox(){
-        areaComboBox.removeAllItems();
-        cityNameComboBox.removeAllItems();
-        
-        for (Area area : system.getAreaList()){
-            areaComboBox.addItem(area);
-        }
-        
-        for (CityRestaurant.CityName cityname : CityRestaurant.CityName.values()) {
-            cityNameComboBox.addItem(cityname);
-        }
-    }
-
-    private void populateRestaurantComboBox(Area area){
-        restaurantComboBox.removeAllItems();
-        
-        for (CityRestaurant restaurant : area.getCityRestaurantList().getCityRestaurantList()){
-            restaurantComboBox.addItem(restaurant.toString());
-        }
+        this.restaurant = restaurant;
+        txtRestaurant.setText(restaurant.getName());
         pupulateMenuTable();
     }
     
     private void pupulateMenuTable(){
-        CityRestaurant r = (CityRestaurant) restaurantComboBox.getSelectedItem();
         DefaultTableModel model = (DefaultTableModel) menuTable.getModel();
         DecimalFormat df = new DecimalFormat("#.00"); 
         model.setRowCount(0);
-            for (Menu menu : r.getMenuList().getMenuList()) {
+            for (Menu menu : restaurant.getMenuList().getMenuList()) {
             Object[] row = new Object[2];
             row[0] = menu;
             row[1] = df.format(menu.getPrice());
@@ -83,21 +57,23 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) orderTable.getModel();
         DecimalFormat df = new DecimalFormat("#.00"); 
         model.setRowCount(0);
-            for (Menu menu : menulist) {
-            Object[] row = new Object[2];
-            row[0] = menu;
-            row[1] = df.format(menu.getPrice());
+            for (OrderItem item : itemlist) {
+            Object[] row = new Object[3];
+            row[0] = item;
+            row[1] = df.format(item.getMenu().getPrice());
+            row[2] = item.getQuantity();
             
             model.addRow(row);
             }
     }
     
     private double totalPrice(){
-        int row = menuTable.getSelectedRow();
-        Menu selectedmenu = (Menu)menuTable.getValueAt(row, 0);
-        double sum = 0;
-        sum = selectedmenu.getPrice()+sum;
-        return sum;
+        double total = 0;
+        for (OrderItem item : itemlist){
+            double itemPrice = item.getQuantity()*item.getMenu().getPrice();
+            total = total + itemPrice;
+        }
+        return total;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,7 +86,6 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
-        restaurantComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         orderTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
@@ -124,11 +99,14 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
         btnRemove = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        areaComboBox = new javax.swing.JComboBox();
-        cityNameComboBox = new javax.swing.JComboBox();
+        txtRestaurant = new javax.swing.JLabel();
+        txtArea = new javax.swing.JLabel();
+        txtCity = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        quantiSpinner = new javax.swing.JSpinner();
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        jLabel1.setText("Please Choose Restaurant:");
+        jLabel1.setText("Restaurant:");
 
         btnBack.setText("<<Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -137,26 +115,19 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
             }
         });
 
-        restaurantComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        restaurantComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                restaurantComboBoxActionPerformed(evt);
-            }
-        });
-
         orderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Dish", "Price"
+                "Item", "Unit Price", "Quantity"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -164,6 +135,11 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(orderTable);
+        if (orderTable.getColumnModel().getColumnCount() > 0) {
+            orderTable.getColumnModel().getColumn(0).setResizable(false);
+            orderTable.getColumnModel().getColumn(1).setResizable(false);
+            orderTable.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabel2.setText("Menu");
@@ -215,20 +191,24 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Area");
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Area:");
 
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("City");
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("City:");
 
-        areaComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtRestaurant.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtRestaurant.setText("<value>");
 
-        cityNameComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cityNameComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cityNameComboBoxActionPerformed(evt);
-            }
-        });
+        txtArea.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtArea.setText("Greater Boston Aera");
+
+        txtCity.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtCity.setText("Boston");
+
+        jLabel7.setText("Quantity");
+
+        quantiSpinner.setModel(new javax.swing.SpinnerNumberModel(1, 1, 1000, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -238,44 +218,51 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnBack)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(areaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cityNameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btnBack))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
+                        .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtArea, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(13, 13, 13)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtTotalprice, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(93, 93, 93)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(btnPlace, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel7)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(quantiSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(btnAddtoCart)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtRestaurant, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(6, 6, 6)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTotalprice, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(93, 93, 93)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                            .addComponent(btnPlace))))
-                                .addComponent(btnAddtoCart))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(restaurantComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(58, 58, 58))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                .addGap(55, 55, 55))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,19 +272,22 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(areaComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(cityNameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtArea)
+                    .addComponent(txtCity))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(restaurantComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
+                    .addComponent(txtRestaurant))
+                .addGap(14, 14, 14)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAddtoCart)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddtoCart)
+                    .addComponent(jLabel7)
+                    .addComponent(quantiSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -309,7 +299,7 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
                     .addComponent(btnRemove))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnPlace)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(33, 33, 33))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -319,30 +309,61 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
         layout.previous(userProcessContainer);
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void restaurantComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restaurantComboBoxActionPerformed
-        pupulateMenuTable();
-    }//GEN-LAST:event_restaurantComboBoxActionPerformed
-
     private void btnAddtoCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddtoCartActionPerformed
         int row = menuTable.getSelectedRow();
         if(row<0){
-            JOptionPane.showMessageDialog(null, "Please select a row!", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please select an item!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Menu selectedmenu = (Menu)menuTable.getValueAt(row, 0);
-        menulist.add(selectedmenu);
+        Menu menu = (Menu)menuTable.getValueAt(row, 0);
+        OrderItem item = new OrderItem();
+        item.setMenu(menu);
+        item.setQuantity((int) quantiSpinner.getValue());
+        if (itemlist.isEmpty()) {
+            itemlist.add(item);
+        }
+        else{
+        boolean duplicated = false;
+        for (int i = 0; i < itemlist.size(); i++) {
+            if (item.getMenu().equals(itemlist.get(i).getMenu())) {
+                duplicated = true;
+                int newQty = itemlist.get(i).getQuantity() + item.getQuantity();
+                itemlist.get(i).setQuantity(newQty);
+                break;
+            }
+            else duplicated = false;
+            }
+        
+            if (!duplicated) {
+                itemlist.add(item);
+            }
+        }
+        
         populateOrderTable();
         DecimalFormat df = new DecimalFormat("#.00"); 
         txtTotalprice.setText(df.format(totalPrice()));
     }//GEN-LAST:event_btnAddtoCartActionPerformed
 
     private void btnPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceActionPerformed
-        if (menulist.size() > 0) {
-            order = orderlist.createOrder();
-            order.setItemList(menulist);
-            order.setPrice(totalPrice());
-            order.setCustomer(account);
-            account.setOrderlist(orderlist);
+        if (itemlist.size() > 0) {
+            FoodDeliveryOrder customerOrder = account.getOrderList().createOrder();
+            customerOrder.setItemList(itemlist);
+            customerOrder.setPrice(totalPrice());
+            customerOrder.setCustomer(account);
+            customerOrder.setRestaurant(restaurant);
+            customerOrder.setStatus("Pending");
+            customerOrder.setDeliveryMan(null);
+            
+            FoodDeliveryOrder restaurantOrder = customerOrder.getRestaurant().getOrderList().createOrder();
+            restaurantOrder.setOrderNumber(customerOrder.getOrderNumber());
+            restaurantOrder.setItemList(customerOrder.getItemList());
+            restaurantOrder.setPrice(customerOrder.getPrice());
+            restaurantOrder.setCustomer(customerOrder.getCustomer());
+            restaurantOrder.setRestaurant(customerOrder.getRestaurant());
+            restaurantOrder.setStatus(customerOrder.getStatus());
+            restaurantOrder.setDeliveryMan(customerOrder.getDeliveryMan());
+            restaurantOrder.setOrderDate(customerOrder.getOrderDate());
+            
             JOptionPane.showMessageDialog(null,"Order placed successfully!");
         }
         else {
@@ -356,40 +377,34 @@ public class PlaceOrderJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Please select a row!", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Menu selectedmenu = (Menu)menuTable.getValueAt(row, 0);
-        menulist.remove(selectedmenu);
+        OrderItem item = (OrderItem)orderTable.getValueAt(row, 0);
+        itemlist.remove(item);
         populateOrderTable();
         DecimalFormat df = new DecimalFormat("#.00"); 
         txtTotalprice.setText(df.format(totalPrice()));
     }//GEN-LAST:event_btnRemoveActionPerformed
 
-    private void cityNameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityNameComboBoxActionPerformed
-        Area area = (Area) areaComboBox.getSelectedItem();
-        CityRestaurant.CityName cityname = (CityRestaurant.CityName)cityNameComboBox.getSelectedItem();
-        if (area != null & cityname != null) {
-            populateRestaurantComboBox(area);
-        }
-    }//GEN-LAST:event_cityNameComboBoxActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox areaComboBox;
     private javax.swing.JButton btnAddtoCart;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnPlace;
     private javax.swing.JButton btnRemove;
-    private javax.swing.JComboBox cityNameComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable menuTable;
     private javax.swing.JTable orderTable;
-    private javax.swing.JComboBox<String> restaurantComboBox;
+    private javax.swing.JSpinner quantiSpinner;
+    private javax.swing.JLabel txtArea;
+    private javax.swing.JLabel txtCity;
+    private javax.swing.JLabel txtRestaurant;
     private javax.swing.JTextField txtTotalprice;
     // End of variables declaration//GEN-END:variables
 }
