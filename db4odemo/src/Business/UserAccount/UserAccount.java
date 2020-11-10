@@ -6,7 +6,7 @@ package Business.UserAccount;
 
 import Business.Employee.Employee;
 import Business.Role.Role;
-import Business.WorkQueue.WorkQueue;
+import Business.Order.OrderList;
 
 /**
  *
@@ -18,13 +18,11 @@ public class UserAccount {
     private String password;
     private Employee employee;
     private Role role;
-    private WorkQueue workQueue;
+    private OrderList orderlist;
 
     public UserAccount() {
-        workQueue = new WorkQueue();
+        orderlist = new OrderList();
     }
-    
-    
     
     public String getUsername() {
         return username;
@@ -58,11 +56,14 @@ public class UserAccount {
         return employee;
     }
 
-    public WorkQueue getWorkQueue() {
-        return workQueue;
+    public OrderList getOrderList() {
+        return orderlist;
     }
 
-    
+    public void setOrderlist(OrderList orderlist) {
+        this.orderlist = orderlist;
+    }
+
     
     @Override
     public String toString() {

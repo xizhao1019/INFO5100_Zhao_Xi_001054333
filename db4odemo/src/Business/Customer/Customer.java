@@ -5,10 +5,26 @@
  */
 package Business.Customer;
 
+import Business.Organization;
+import Business.Role.CustomerRole;
+import Business.Role.Role;
+import java.util.ArrayList;
+
 /**
  *
  * @author harold
  */
-public class Customer {
+public class Customer extends Organization{
+
+    public Customer() {
+        super(Organization.Type.Customer.getValue());
+    }
+
+    @Override
+    public ArrayList<Role> getSupportedRole() {
+        ArrayList<Role> roles = new ArrayList();
+        roles.add(new CustomerRole());
+        return roles;    
+    }
     
 }
